@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { useStore } from "@/store/useStore";
 
 export function Loader() {
-  const { progress, active } = useProgress();
+  const { progress, active, total, loaded } = useProgress();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -18,9 +18,10 @@ export function Loader() {
   useEffect(() => {
     if (!containerRef.current || !mounted) return;
 
-    if (progress === 100 && !active) {
-      // Small delay to ensure shaders are fully compiled
-      const timer = setTimeout(() => {
+    let timer: NodeJS.Timeout;
+
+    const finishLoading = () => {
+      timer = setTimeout(() => {
         gsap.to(containerRef.current, {
           opacity: 0,
           duration: 1.5,
@@ -33,10 +34,26 @@ export function Loader() {
           }
         });
       }, 500);
+    };
 
+    // If progress reaches 100
+    if (progress === 100 && !active) {
+      finishLoading();
       return () => clearTimeout(timer);
     }
-  }, [progress, active, mounted]);
+    
+    // Fallback: If after 2 seconds no assets are loading at all, force finish
+    const fallbackTimer = setTimeout(() => {
+      if (total === 0 && !active) {
+        finishLoading();
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(fallbackTimer);
+    };
+  }, [progress, active, total, loaded, mounted]);
 
   if (!mounted) return null;
 
@@ -52,11 +69,11 @@ export function Loader() {
         <div className="w-48 h-[1px] bg-white/20 mb-4 overflow-hidden">
           <div 
             className="h-full bg-color-accent-gold transition-all duration-300 ease-out"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${Math.max(progress, total === 0 ? 100 : 0)}%` }}
           />
         </div>
         <p className="text-xs uppercase tracking-[0.4em] text-color-accent-gold">
-          {Math.floor(progress)}%
+          {Math.floor(Math.max(progress, total === 0 ? 100 : 0))}%
         </p>
       </div>
     </div>
