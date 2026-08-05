@@ -64,7 +64,7 @@ export default function EventsBookingSection() {
         {/* --- EVENTS TIMELINE --- */}
         <div className="mb-64">
           <div className="reveal-element opacity-0 mb-16">
-            <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
+            <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-4">
               Upcoming
             </h2>
             <h3 className="text-4xl md:text-6xl font-bold tracking-tighter text-color-primary-white">
@@ -104,7 +104,7 @@ export default function EventsBookingSection() {
         {/* --- BOOKING EXPERIENCE --- */}
         <div className="min-h-screen flex flex-col justify-center">
           <div className="reveal-element opacity-0 text-center mb-16">
-            <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
+            <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-4">
               Reservations
             </h2>
             <h3 className="text-5xl md:text-8xl font-bold tracking-tighter text-color-primary-white">
@@ -144,7 +144,7 @@ export default function EventsBookingSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                  className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 md:px-0"
                 >
                   {["Today", "Tomorrow", "Friday", "Saturday"].map((day) => (
                     <MagneticButton
@@ -153,10 +153,10 @@ export default function EventsBookingSection() {
                         setSelectedDate(day);
                         setBookingStep("confirm");
                       }}
-                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-8 hover:border-color-accent-gold transition-colors duration-300 text-center pointer-events-auto rounded-xl w-full h-full"
+                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-6 md:p-8 hover:border-color-accent-gold transition-colors duration-300 text-center pointer-events-auto rounded-xl w-full h-full"
                       strength={15}
                     >
-                      <h4 className="text-2xl text-white group-hover:text-color-accent-gold transition-colors duration-300">
+                      <h4 className="text-xl md:text-2xl text-white group-hover:text-color-accent-gold transition-colors duration-300">
                         {day}
                       </h4>
                     </MagneticButton>
@@ -170,10 +170,10 @@ export default function EventsBookingSection() {
                   key="confirm"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center p-12 border border-color-accent-gold/30 bg-color-accent-gold/10 backdrop-blur-md"
+                  className="text-center p-8 md:p-12 border border-color-accent-gold/30 bg-color-accent-gold/10 backdrop-blur-md rounded-2xl mx-4 md:mx-0"
                 >
-                  <h4 className="text-3xl text-color-accent-gold mb-4">Request Sent</h4>
-                  <p className="text-xl text-white mb-8">
+                  <h4 className="text-2xl md:text-3xl text-color-accent-gold mb-4">Request Sent</h4>
+                  <p className="text-lg md:text-xl text-white mb-8">
                     Your preference for {selectedDate} has been registered. Our concierge will contact you shortly to confirm table availability.
                   </p>
                   <button 

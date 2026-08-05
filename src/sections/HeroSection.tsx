@@ -41,7 +41,7 @@ export default function HeroSection() {
         ref={textRef} 
         className="relative z-10 container mx-auto px-6 lg:px-12 flex flex-col items-center justify-center text-center mt-32 pointer-events-none"
       >
-        <p className="hero-text opacity-0 uppercase tracking-[0.2em] text-color-accent-gold text-sm font-medium mb-6">
+        <p className="hero-text opacity-0 uppercase tracking-[0.3em] text-color-accent-gold text-sm font-medium mb-6">
           The Next Generation of Billiards
         </p>
         
@@ -66,9 +66,9 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 pointer-events-none opacity-50">
-        <span className="text-xs uppercase tracking-widest text-color-secondary-white">Scroll to explore</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-color-secondary-white to-transparent" />
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 pointer-events-none opacity-40">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-color-secondary-white">Scroll to explore</span>
+        <div className="w-[1px] h-16 bg-gradient-to-b from-color-secondary-white to-transparent" />
       </div>
     </section>
   );

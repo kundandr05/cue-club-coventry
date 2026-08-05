@@ -23,8 +23,8 @@ export default function AboutSection() {
         {
           y: 0,
           opacity: 1,
-          duration: 1.5,
-          ease: "power3.out",
+          duration: 2,
+          ease: "power4.out",
           scrollTrigger: {
             trigger: block,
             start: "top 80%", // triggers when top of block hits 80% down viewport
@@ -57,7 +57,7 @@ export default function AboutSection() {
         {/* Block 1 */}
         <div className="h-screen flex items-center justify-start px-6 lg:px-24">
           <div className="max-w-2xl about-text opacity-0 backdrop-blur-xl bg-black/30 border border-white/10 p-8 md:p-16 rounded-3xl shadow-2xl">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-color-accent-gold mb-6">
+            <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-6">
               The Atmosphere
             </h2>
             <p className="text-xl md:text-3xl leading-relaxed text-color-primary-white">
@@ -69,7 +69,7 @@ export default function AboutSection() {
         {/* Block 2 */}
         <div className="h-screen flex items-center justify-end px-6 lg:px-24 text-right">
           <div className="max-w-2xl about-text opacity-0 backdrop-blur-xl bg-black/30 border border-white/10 p-8 md:p-16 rounded-3xl shadow-2xl">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-color-accent-gold mb-6">
+            <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-6">
               The Craftsmanship
             </h2>
             <p className="text-xl md:text-3xl leading-relaxed text-color-primary-white">
