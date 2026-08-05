@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors - Luxury Dark Theme (Apple / Linear / Stripe inspired) */
+  --color-primary-black: #0a0a0a;
+  --color-secondary-black: #121212;
+  --color-primary-white: #ededed;
+  --color-secondary-white: #a1a1aa;
+  
+  --color-accent-gold: #c6a87c;
+  --color-accent-gold-hover: #d4b990;
+  
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.2);
+
+  /* Typography */
+  /* Assuming Next.js fonts injected via variables */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif; /* Placeholder for premium display font */
+
+  /* Spacing Scale */
+  --spacing-section: 8rem;
+  --spacing-section-mobile: 4rem;
+  --spacing-container: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 9999px;
+
+  /* Shadows (Glassmorphism / Premium Depth) */
+  --shadow-glass: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(198, 168, 124, 0.2);
+  
+  /* Transitions */
+  --transition-cinematic: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-ui: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  background: var(--color-primary-black);
+  color: var(--color-primary-white);
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background: var(--color-primary-black);
+  color: var(--color-primary-white);
+}
+
+/* Utilities for Lenis */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
