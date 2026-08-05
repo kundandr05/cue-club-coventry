@@ -8,10 +8,6 @@
   --color-porcelain: #F5F3EE;
   --color-smoke: #8C8C88;
   --color-glow-green: rgba(27, 110, 76, 0.35);
-
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
 }
 
 :root {
