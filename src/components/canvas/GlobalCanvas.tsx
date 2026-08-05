@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { View, Preload } from "@react-three/drei";
+import { View, Preload, Bvh } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { Suspense } from "react";
 
@@ -19,8 +19,11 @@ export default function GlobalCanvas() {
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }} // Antialias false because we use postprocessing
         camera={{ position: [0, 0, 5], fov: 45 }}
       >
-        {/* View.Port is where the individual <View> components from DOM will render */}
-        <View.Port />
+        {/* Optimize raycasting with Bounding Volume Hierarchy */}
+        <Bvh firstHitOnly>
+          {/* View.Port is where the individual <View> components from DOM will render */}
+          <View.Port />
+        </Bvh>
 
         {/* Global Post Processing */}
         <EffectComposer multisampling={4}>

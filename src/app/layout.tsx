@@ -5,6 +5,7 @@ import LenisProvider from "@/components/LenisProvider";
 import GlobalCanvasWrapper from "@/components/canvas/GlobalCanvasWrapper";
 import { CustomCursor } from "@/components/CustomCursor";
 import { AudioManager } from "@/components/AudioManager";
+import { Loader } from "@/components/Loader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,6 +77,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <LenisProvider>
+          <Loader />
           <CustomCursor />
           {children}
           <AudioManager />
