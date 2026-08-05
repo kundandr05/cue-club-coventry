@@ -59,9 +59,28 @@ function CueBall({ progress, onComplete }: { progress: number; onComplete: () =>
 }
 
 export function Loader({ onLoaded }: { onLoaded: () => void }) {
-  const { progress } = useProgress();
+  const { progress: actualProgress } = useProgress();
+  const [simulatedProgress, setSimulatedProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Since we don't have heavy GLB assets yet, simulate a fast load
+  // When real assets are added, this will just serve as a minimum loader time
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current += Math.random() * 15;
+      if (current >= 100) {
+        current = 100;
+        clearInterval(interval);
+      }
+      setSimulatedProgress(Math.max(current, actualProgress));
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [actualProgress]);
+
+  const progress = Math.min(simulatedProgress, 100);
 
   const handleComplete = () => {
     // Fade out the loader
