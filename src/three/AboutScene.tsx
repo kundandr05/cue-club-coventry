@@ -7,6 +7,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
+import { Atmosphere } from "./components/Atmosphere";
 
 export default function AboutScene() {
   const cameraGroupRef = useRef<THREE.Group>(null);
@@ -86,10 +87,12 @@ export default function AboutScene() {
         color="#ffffff"
       />
 
-      {/* The Camera Group that moves around the table */}
+      {/* Camera Rig */}
       <group ref={cameraGroupRef}>
         <PerspectiveCamera makeDefault fov={45} near={0.1} far={100} />
       </group>
+
+      <Atmosphere />
 
       <Center>
         <PoolTable ref={tableRef} />

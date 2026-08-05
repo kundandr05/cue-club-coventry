@@ -52,7 +52,7 @@ export default function TablesFacilitiesSection() {
         
         {/* The Pull Back (Pool Table) */}
         <div className="h-screen w-full flex items-center justify-start px-6 lg:px-24">
-          <div className="max-w-xl facility-text opacity-0 pointer-events-auto">
+          <div className="max-w-xl facility-text opacity-0 pointer-events-auto backdrop-blur-xl bg-black/40 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Tables
             </h2>
@@ -64,7 +64,7 @@ export default function TablesFacilitiesSection() {
 
         {/* The Pan (Snooker Table) */}
         <div className="h-[150vh] w-full flex items-center justify-end px-6 lg:px-24 text-right pt-[25vh]">
-          <div className="max-w-2xl facility-text opacity-0 pointer-events-auto">
+          <div className="max-w-2xl facility-text opacity-0 pointer-events-auto backdrop-blur-xl bg-black/40 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Snooker Room
             </h2>
@@ -76,7 +76,7 @@ export default function TablesFacilitiesSection() {
 
         {/* The Lounge (Bar and Seating) */}
         <div className="h-[150vh] w-full flex items-center justify-start px-6 lg:px-24 pt-[25vh]">
-          <div className="max-w-xl facility-text opacity-0 pointer-events-auto">
+          <div className="max-w-xl facility-text opacity-0 pointer-events-auto backdrop-blur-xl bg-black/40 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Lounge
             </h2>

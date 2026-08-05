@@ -56,7 +56,7 @@ export default function AboutSection() {
       <div className="relative z-10 w-full">
         {/* Block 1 */}
         <div className="h-screen flex items-center justify-start px-6 lg:px-24">
-          <div className="max-w-2xl about-text opacity-0">
+          <div className="max-w-2xl about-text opacity-0 backdrop-blur-xl bg-black/30 border border-white/10 p-8 md:p-16 rounded-3xl shadow-2xl">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-color-accent-gold mb-6">
               The Atmosphere
             </h2>
@@ -68,7 +68,7 @@ export default function AboutSection() {
 
         {/* Block 2 */}
         <div className="h-screen flex items-center justify-end px-6 lg:px-24 text-right">
-          <div className="max-w-2xl about-text opacity-0">
+          <div className="max-w-2xl about-text opacity-0 backdrop-blur-xl bg-black/30 border border-white/10 p-8 md:p-16 rounded-3xl shadow-2xl">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-color-accent-gold mb-6">
               The Craftsmanship
             </h2>

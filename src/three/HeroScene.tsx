@@ -6,11 +6,12 @@ import { Center, SpotLight, Float, MeshReflectorMaterial, Box } from "@react-thr
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { PoolTable } from "./components/PoolTable";
+import { Atmosphere } from "./components/Atmosphere";
 
 export default function HeroScene() {
   const groupRef = useRef<THREE.Group>(null);
+  const parallaxGroupRef = useRef<THREE.Group>(null);
   const lightRef = useRef<THREE.SpotLight>(null);
 
   // Cinematic Loading Animation (Entry)
@@ -51,15 +52,18 @@ export default function HeroScene() {
 
   }, []);
 
-  // Mouse Parallax
-  useFrame((state) => {
-    if (groupRef.current) {
+  // Mouse Parallax & Continuous Cinematic Drift
+  useFrame((state, delta) => {
+    if (parallaxGroupRef.current) {
+      // Continuous slow drift for cinematic feel
+      parallaxGroupRef.current.rotation.y += delta * 0.05;
+
       // Gentle floating/breathing effect combined with mouse parallax
-      const targetX = (state.pointer.x * Math.PI) / 10;
-      const targetY = (state.pointer.y * Math.PI) / 10;
+      const targetX = (state.pointer.x * Math.PI) / 20;
+      const targetY = (state.pointer.y * Math.PI) / 20;
       
-      groupRef.current.rotation.x += 0.05 * (targetY - groupRef.current.rotation.x);
-      groupRef.current.rotation.y += 0.05 * (targetX - groupRef.current.rotation.y);
+      parallaxGroupRef.current.rotation.x += 0.02 * (targetY - parallaxGroupRef.current.rotation.x);
+      parallaxGroupRef.current.rotation.y += 0.02 * (targetX - parallaxGroupRef.current.rotation.y);
     }
   });
 
@@ -84,14 +88,16 @@ export default function HeroScene() {
         color="#ffffff"
       />
 
-      <group ref={groupRef}>
-        <Center>
-          <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
-            
-            <PoolTable />
+      <Atmosphere />
 
-          </Float>
-        </Center>
+      <group ref={groupRef}>
+        <group ref={parallaxGroupRef}>
+          <Center>
+            <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
+              <PoolTable />
+            </Float>
+          </Center>
+        </group>
       </group>
     </>
   );

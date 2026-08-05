@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
-import { useThree } from "@react-three/fiber";
+import { useThree, useFrame } from "@react-three/fiber";
 import { Center, SpotLight, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
 import { SnookerTable } from "./components/SnookerTable";
 import { LoungeArea } from "./components/LoungeArea";
+import { Atmosphere } from "./components/Atmosphere";
 
 export default function FacilitiesScene() {
   const cameraGroupRef = useRef<THREE.Group>(null);
@@ -71,6 +72,22 @@ export default function FacilitiesScene() {
 
   }, []);
 
+  // Continuous Cinematic Drift
+  const driftRef = useRef<THREE.Group>(null);
+  useFrame((state, delta) => {
+    if (driftRef.current) {
+      // Very slow breathing/floating
+      driftRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+      
+      // Mouse Parallax
+      const targetX = (state.pointer.x * Math.PI) / 40;
+      const targetY = (state.pointer.y * Math.PI) / 40;
+      
+      driftRef.current.rotation.x += 0.02 * (targetY - driftRef.current.rotation.x);
+      driftRef.current.rotation.y += 0.02 * (targetX - driftRef.current.rotation.y);
+    }
+  });
+
   return (
     <>
       {/* Shared Lighting System */}
@@ -86,10 +103,15 @@ export default function FacilitiesScene() {
       <SpotLight position={[30, 4, 0]} angle={0.5} penumbra={1} intensity={2} color="#c6a87c" castShadow />
       <SpotLight position={[25, 5, -2]} angle={0.6} penumbra={1} intensity={1.5} color="#c6a87c" />
 
-      {/* Camera Rig */}
+      {/* Camera Rig (Scroll Driven) */}
       <group ref={cameraGroupRef}>
-        <PerspectiveCamera makeDefault fov={45} near={0.1} far={100} />
+        {/* Drift Rig (Time Driven) */}
+        <group ref={driftRef}>
+          <PerspectiveCamera makeDefault fov={45} near={0.1} far={100} />
+        </group>
       </group>
+
+      <Atmosphere />
 
       {/* The Environment Layout */}
       {/* Pool Table at origin */}

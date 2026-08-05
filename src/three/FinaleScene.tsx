@@ -7,6 +7,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoungeArea } from "./components/LoungeArea";
+import { Atmosphere } from "./components/Atmosphere";
 
 export default function FinaleScene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -54,7 +55,11 @@ export default function FinaleScene() {
         <ambientLight intensity={0.005} />
         <SpotLight position={[0, 6, 2]} angle={0.7} penumbra={1} intensity={1} color="#c6a87c" castShadow />
         <SpotLight position={[-4, 4, -2]} angle={0.8} penumbra={1} intensity={0.2} color="#c6a87c" />
+        {/* Soft Glow */}
+        <spotLight position={[0, 5, -2]} angle={0.8} penumbra={1} intensity={1} color="#c6a87c" />
       </group>
+
+      <Atmosphere />
 
       <PerspectiveCamera 
         ref={cameraRef}
