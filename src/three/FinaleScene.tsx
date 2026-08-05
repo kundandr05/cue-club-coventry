@@ -6,8 +6,7 @@ import { Center, SpotLight, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { LoungeArea } from "./components/LoungeArea";
-import { Atmosphere } from "./components/Atmosphere";
-import { LuxuryFloor } from "./components/LuxuryFloor";
+import { ClubEnvironment } from "./components/ClubEnvironment";
 
 export default function FinaleScene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -58,11 +57,8 @@ export default function FinaleScene() {
         {/* Soft Glow */}
         <spotLight position={[0, 5, -2]} angle={0.8} penumbra={1} intensity={1} color="#c6a87c" />
       </group>
-
-      <Atmosphere />
-      
-      {/* Non-reflective luxury floor to ground the lounge */}
-      <LuxuryFloor isReflective={false} position={[0, -2, 0]} />
+      {/* The Environment Layout (Club Architecture Base) */}
+      <ClubEnvironment zone="lounge" />
 
       <PerspectiveCamera 
         ref={cameraRef}

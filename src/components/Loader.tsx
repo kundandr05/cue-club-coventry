@@ -3,6 +3,7 @@
 import { useProgress } from "@react-three/drei";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useStore } from "@/store/useStore";
 
 export function Loader() {
   const { progress, active } = useProgress();
@@ -28,6 +29,7 @@ export function Loader() {
             if (containerRef.current) {
               containerRef.current.style.display = "none";
             }
+            useStore.getState().setAppLoaded(true);
           }
         });
       }, 500);

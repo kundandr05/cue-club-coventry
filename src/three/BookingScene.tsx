@@ -6,8 +6,7 @@ import { Center, SpotLight, PerspectiveCamera, Float } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { LoungeArea } from "./components/LoungeArea";
-import { Atmosphere } from "./components/Atmosphere";
-import { LuxuryFloor } from "./components/LuxuryFloor";
+import { ClubEnvironment } from "./components/ClubEnvironment";
 
 export default function BookingScene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -43,10 +42,10 @@ export default function BookingScene() {
       {/* Dimmed, moody lighting emphasizing the "end of the journey" */}
       <ambientLight intensity={0.01} />
       
-      {/* Environment */}
-      <Atmosphere />
-      <LuxuryFloor isReflective={false} position={[0, -2, 0]} />
+      {/* The Environment Layout (Club Architecture Base) */}
+      <ClubEnvironment zone="lounge" />
 
+      {/* Specific Booking Lighting */}
       <SpotLight position={[0, 6, 2]} angle={0.6} penumbra={1} intensity={1.5} color="#c6a87c" castShadow />
       <SpotLight position={[-4, 4, -2]} angle={0.8} penumbra={1} intensity={0.5} color="#c6a87c" />
 

@@ -7,9 +7,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
-import { Atmosphere } from "./components/Atmosphere";
-import { LuxuryFloor } from "./components/LuxuryFloor";
-import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { ClubEnvironment } from "./components/ClubEnvironment";
 import { PendantLight } from "./components/PendantLight";
 
 export default function AboutScene() {
@@ -72,35 +70,12 @@ export default function AboutScene() {
 
   return (
     <>
-      {/* Matching Hero Lighting */}
-      <ambientLight intensity={0.1} />
-      <SpotLight
-        position={[0, 5, 0]}
-        angle={0.6}
-        penumbra={0.5}
-        intensity={3}
-        color="#c6a87c"
-        castShadow
-      />
-      <SpotLight
-        position={[5, 2, 5]}
-        angle={0.4}
-        penumbra={1}
-        intensity={1}
-        color="#ffffff"
-      />
+      <ClubEnvironment zone="lounge" />
 
       {/* Camera Rig */}
       <group ref={cameraGroupRef}>
         <PerspectiveCamera makeDefault fov={45} near={0.1} far={100} />
       </group>
-
-      <Atmosphere />
-      
-      {/* Non-reflective floor for performance, still adds grounding */}
-      <LuxuryFloor isReflective={false} position={[0, -2, 0]} />
-
-      <ArchitecturalPillars depth={-20} width={60} count={8} />
 
       <Center>
         <group>

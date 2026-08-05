@@ -8,20 +8,23 @@ import HeroScene from "@/three/HeroScene";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { MagneticButton } from "@/components/MagneticButton";
+import { useStore } from "@/store/useStore";
 
 export default function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
 
+  const isAppLoaded = useStore((state) => state.isAppLoaded);
+
   useEffect(() => {
-    // Staggered fade up for text elements
-    if (textRef.current) {
+    // Staggered fade up for text elements only AFTER the app has fully loaded (Loader dissolves)
+    if (isAppLoaded && textRef.current) {
       const elements = textRef.current.querySelectorAll(".hero-text");
       fadeUp(elements as unknown as Element[], {
         stagger: 0.2,
-        delay: 0.5, // Wait for initial 3D table load to start
+        delay: 0.2, // Small delay after loader vanishes
       });
     }
-  }, []);
+  }, [isAppLoaded]);
 
   return (
     <section id="hero" className="relative w-full h-screen overflow-hidden flex items-center justify-center">

@@ -9,9 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
 import { SnookerTable } from "./components/SnookerTable";
 import { LoungeArea } from "./components/LoungeArea";
-import { Atmosphere } from "./components/Atmosphere";
-import { LuxuryFloor } from "./components/LuxuryFloor";
-import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { ClubEnvironment } from "./components/ClubEnvironment";
 import { PendantLight } from "./components/PendantLight";
 
 export default function FacilitiesScene() {
@@ -93,24 +91,13 @@ export default function FacilitiesScene() {
 
   return (
     <>
-      {/* Shared Lighting System */}
-      <ambientLight intensity={0.05} />
-      
-      {/* Pool Table Light */}
+      {/* The Environment Layout (Club Architecture Base) */}
+      <ClubEnvironment zone="facilities" />
+
+      {/* Specific Table Practical Lights */}
       <SpotLight position={[0, 6, 0]} angle={0.8} penumbra={0.5} intensity={3} color="#c6a87c" castShadow />
-      
-      {/* Snooker Table Light */}
       <SpotLight position={[15, 6, 0]} angle={0.8} penumbra={0.8} intensity={4} color="#ffffff" castShadow />
-      
-      {/* Lounge Lighting (Pendant illusion) */}
       <SpotLight position={[30, 4, 0]} angle={0.5} penumbra={1} intensity={2} color="#c6a87c" castShadow />
-      <SpotLight position={[25, 5, -2]} angle={0.6} penumbra={1} intensity={1.5} color="#c6a87c" />
-
-      {/* Non-reflective luxury floor for performance across multiple tables */}
-      <LuxuryFloor isReflective={false} position={[0, -2, 0]} size={[200, 200]} />
-
-      {/* Background architectural framing spread across the wide scene */}
-      <ArchitecturalPillars depth={-40} width={120} count={16} height={30} />
 
       {/* Camera Rig (Scroll Driven) */}
       <group ref={cameraGroupRef}>
@@ -127,9 +114,7 @@ export default function FacilitiesScene() {
         </group>
       </group>
 
-      <Atmosphere />
-
-      {/* The Environment Layout */}
+      {/* Tables layout over the environment */}
       {/* Pool Table at origin */}
       <group>
         <PendantLight position={[0, 4.5, 0]} intensity={8} distance={20} />

@@ -7,23 +7,27 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
-import { Atmosphere } from "./components/Atmosphere";
-import { LuxuryFloor } from "./components/LuxuryFloor";
-import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { ClubEnvironment } from "./components/ClubEnvironment";
 import { PendantLight } from "./components/PendantLight";
+import { useStore } from "@/store/useStore";
 
 export default function HeroScene() {
   const groupRef = useRef<THREE.Group>(null);
   const parallaxGroupRef = useRef<THREE.Group>(null);
   const lightRef = useRef<THREE.SpotLight>(null);
 
+  const isAppLoaded = useStore((state) => state.isAppLoaded);
+
   // Cinematic Loading Animation (Entry)
   useLayoutEffect(() => {
     if (!groupRef.current) return;
     
     // Initial State: Table is rotated and lower, ball is invisible
-    gsap.set(groupRef.current.position, { y: -5 });
-    gsap.set(groupRef.current.rotation, { x: Math.PI / 4, y: Math.PI / 4 });
+    if (!isAppLoaded) {
+      gsap.set(groupRef.current.position, { y: -5 });
+      gsap.set(groupRef.current.rotation, { x: Math.PI / 4, y: Math.PI / 4 });
+      return;
+    }
 
     
     const tl = gsap.timeline();
@@ -53,7 +57,7 @@ export default function HeroScene() {
       }
     });
 
-  }, []);
+  }, [isAppLoaded]);
 
   // Mouse Parallax & Continuous Cinematic Drift
   useFrame((state, delta) => {
@@ -72,35 +76,8 @@ export default function HeroScene() {
 
   return (
     <>
-      {/* Cinematic Lighting */}
-      <ambientLight intensity={0.1} />
-      <SpotLight
-        ref={lightRef}
-        position={[0, 5, 0]}
-        angle={0.6}
-        penumbra={0.5}
-        intensity={3}
-        color="#c6a87c" // Gold accent
-        castShadow
-      />
-      <SpotLight
-        position={[5, 2, 5]}
-        angle={0.4}
-        penumbra={1}
-        intensity={1}
-        color="#ffffff"
-      />
-      {/* Ambient moody light */}
-      <ambientLight intensity={0.2} color="#000510" />
-
-      {/* Cinematic Atmosphere (Particles, Fog) */}
-      <Atmosphere />
-
-      {/* Grounding the scene with a highly reflective luxury floor */}
-      <LuxuryFloor isReflective={true} position={[0, -2, 0]} />
-
-      {/* Architectural boundary */}
-      <ArchitecturalPillars depth={-20} width={60} count={8} />
+      {/* Grounding the scene with the physical VIP architecture */}
+      <ClubEnvironment zone="hero" />
 
       <group ref={groupRef} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 1}>
         <group ref={parallaxGroupRef}>
