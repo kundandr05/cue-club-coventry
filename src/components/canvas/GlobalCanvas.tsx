@@ -8,12 +8,12 @@ import { Suspense } from "react";
 export default function GlobalCanvas() {
   return (
     <div
-      className="fixed inset-0 z-[-1] pointer-events-none"
+      className="fixed inset-0 z-0 pointer-events-none"
       style={{ width: "100vw", height: "100vh" }}
     >
       <Canvas
         eventSource={typeof window !== "undefined" ? document.getElementById("root") || document.body : undefined}
-        className="pointer-events-none"
+        className="pointer-events-auto"
         shadows
         dpr={[1, 2]} // Performance optimization: cap DPR at 2 for mobile
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }} // Antialias false because we use postprocessing

@@ -36,26 +36,23 @@ export default function TablesFacilitiesSection() {
     <section 
       id="facilities" 
       ref={containerRef}
-      className="relative w-full min-h-[400vh] flex flex-col overflow-hidden bg-color-primary-black"
+      className="relative w-full min-h-[400vh] flex flex-col bg-transparent"
     >
       {/* 3D View Portal */}
-      <div className="sticky top-0 w-full h-screen z-0">
+      <div className="sticky top-0 w-full h-screen z-0 overflow-hidden">
         <View className="w-full h-full pointer-events-none">
           <Suspense fallback={null}>
             <FacilitiesScene />
           </Suspense>
         </View>
-        
-        {/* Soft fade gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-color-primary-black via-transparent to-color-primary-black opacity-80 pointer-events-none" />
       </div>
 
       {/* DOM Overlay: Narrative Typography synced to the pan */}
-      <div className="relative z-10 w-full -mt-[100vh]">
+      <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
         
         {/* The Pull Back (Pool Table) */}
-        <div className="h-screen flex items-center justify-start px-6 lg:px-24">
-          <div className="max-w-xl facility-text opacity-0">
+        <div className="h-screen w-full flex items-center justify-start px-6 lg:px-24">
+          <div className="max-w-xl facility-text opacity-0 pointer-events-auto">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Tables
             </h2>
@@ -66,8 +63,8 @@ export default function TablesFacilitiesSection() {
         </div>
 
         {/* The Pan (Snooker Table) */}
-        <div className="h-[150vh] flex items-center justify-end px-6 lg:px-24 text-right pt-[50vh]">
-          <div className="max-w-2xl facility-text opacity-0">
+        <div className="h-[150vh] w-full flex items-center justify-end px-6 lg:px-24 text-right pt-[25vh]">
+          <div className="max-w-2xl facility-text opacity-0 pointer-events-auto">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Snooker Room
             </h2>
@@ -78,8 +75,8 @@ export default function TablesFacilitiesSection() {
         </div>
 
         {/* The Lounge (Bar and Seating) */}
-        <div className="h-[150vh] flex items-center justify-start px-6 lg:px-24">
-          <div className="max-w-xl facility-text opacity-0">
+        <div className="h-[150vh] w-full flex items-center justify-start px-6 lg:px-24 pt-[25vh]">
+          <div className="max-w-xl facility-text opacity-0 pointer-events-auto">
             <h2 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-4">
               The Lounge
             </h2>

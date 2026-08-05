@@ -125,7 +125,7 @@ export default function EventsBookingSection() {
                 >
                   <button 
                     onClick={() => setBookingStep("date")}
-                    className="group relative overflow-hidden px-12 py-6 border border-white/20 bg-white/5 backdrop-blur-md"
+                    className="group relative overflow-hidden px-12 py-6 border border-white/20 bg-white/5 backdrop-blur-md pointer-events-auto"
                   >
                     <div className="absolute inset-0 bg-color-accent-gold scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                     <span className="relative z-10 text-xl md:text-2xl font-medium tracking-widest text-white group-hover:text-black transition-colors duration-500">
@@ -151,7 +151,7 @@ export default function EventsBookingSection() {
                         setSelectedDate(day);
                         setBookingStep("confirm");
                       }}
-                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-8 hover:border-color-accent-gold transition-colors duration-300 text-center"
+                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-8 hover:border-color-accent-gold transition-colors duration-300 text-center pointer-events-auto"
                     >
                       <h4 className="text-2xl text-white group-hover:text-color-accent-gold transition-colors duration-300">
                         {day}
@@ -175,7 +175,7 @@ export default function EventsBookingSection() {
                   </p>
                   <button 
                     onClick={() => setBookingStep("idle")}
-                    className="text-sm tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors"
+                    className="text-sm tracking-[0.2em] uppercase text-white/50 hover:text-white transition-colors pointer-events-auto"
                   >
                     Start Over
                   </button>

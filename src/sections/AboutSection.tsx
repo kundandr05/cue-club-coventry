@@ -40,7 +40,7 @@ export default function AboutSection() {
     <section 
       id="about" 
       ref={containerRef}
-      className="relative w-full min-h-[300vh] flex flex-col justify-between overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden"
     >
       {/* 3D View Portal fixed within this section */}
       <div className="sticky top-0 w-full h-screen z-0">

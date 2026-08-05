@@ -75,10 +75,10 @@ export default function ContactSection() {
           {/* Contact & Hours */}
           <div className="finale-element opacity-0">
             <h4 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-6">Connect</h4>
-            <a href="mailto:concierge@cueclub.com" className="block text-xl text-color-primary-white font-medium mb-2 hover:text-color-accent-gold transition-colors">
+            <a href="mailto:concierge@cueclub.com" className="block text-xl text-color-primary-white font-medium mb-2 hover:text-color-accent-gold transition-colors pointer-events-auto">
               concierge@cueclub.com
             </a>
-            <a href="tel:+442412345678" className="block text-gray-400 mb-6 hover:text-white transition-colors">
+            <a href="tel:+442412345678" className="block text-gray-400 mb-6 hover:text-white transition-colors pointer-events-auto">
               +44 24 1234 5678
             </a>
             <p className="text-gray-500 text-sm">Mon - Sun: 12:00 PM - 02:00 AM</p>
@@ -87,13 +87,13 @@ export default function ContactSection() {
           {/* Action */}
           <div className="finale-element opacity-0 flex flex-col items-start md:items-end text-left md:text-right">
             <h4 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-6">Experience</h4>
-            <button className="px-8 py-4 border border-white/20 text-white uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-transparent transition-all duration-300 mb-6">
+            <button className="px-8 py-4 border border-white/20 text-white uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-transparent transition-all duration-300 mb-6 pointer-events-auto">
               Book a Table
             </button>
             <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">IG</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">X</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">IN</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors pointer-events-auto">IG</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors pointer-events-auto">X</a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors pointer-events-auto">IN</a>
             </div>
           </div>
 
