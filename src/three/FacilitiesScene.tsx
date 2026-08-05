@@ -20,12 +20,12 @@ export default function FacilitiesScene() {
     if (!cameraGroupRef.current || !poolTableRef.current) return;
 
     // 1. Initial State: Perfectly match the end of AboutScene
-    // PoolTable was rotated 270 degrees
-    gsap.set(poolTableRef.current.rotation, { y: Math.PI * 1.5 });
+    // PoolTable was at Math.PI
+    gsap.set(poolTableRef.current.rotation, { y: Math.PI });
     
-    // Camera was at macro cue-ball shot
-    gsap.set(cameraGroupRef.current.position, { x: 0, y: 0.5, z: 2.2 });
-    gsap.set(cameraGroupRef.current.rotation, { x: -0.05, y: 0, z: 0 });
+    // Camera ended looking at the lounge
+    gsap.set(cameraGroupRef.current.position, { x: -6, y: 1.5, z: -4 });
+    gsap.set(cameraGroupRef.current.rotation, { x: 0, y: Math.PI / 6, z: 0 });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -36,29 +36,32 @@ export default function FacilitiesScene() {
       }
     });
 
-    // 2. The Pull Back: Reveal the full Pool Table
+    // 2. The Pull Back: Pan across the room to reveal the Snooker Table
     tl.to(cameraGroupRef.current.position, {
-      x: 0,
-      y: 4,
-      z: 10,
+      x: 5,
+      y: 3,
+      z: 12,
       ease: "power2.inOut",
     })
     .to(cameraGroupRef.current.rotation, {
-      x: -0.2,
+      y: 0,
+      x: -0.1,
       ease: "power2.inOut",
     }, "<")
 
-    // 3. The Pan: Move across to the Snooker Table (located at x: 15)
+    // 3. The Sweep: Move toward the Snooker Table area (x: 15)
     .to(cameraGroupRef.current.position, {
       x: 15,
+      y: 4,
+      z: 10,
       ease: "power1.inOut",
     })
     .to(cameraGroupRef.current.rotation, {
-      y: -Math.PI / 8, // slight turn to look at it dynamically
+      y: -Math.PI / 8, 
       ease: "power1.inOut",
     }, "<")
     
-    // 4. The Sweep: Move to the Lounge Area (located at x: 30)
+    // 4. The Finish: Look down the line of tables
     .to(cameraGroupRef.current.position, {
       x: 30,
       y: 3,
@@ -66,8 +69,8 @@ export default function FacilitiesScene() {
       ease: "power2.inOut",
     })
     .to(cameraGroupRef.current.rotation, {
-      y: 0,
-      x: -0.1,
+      y: Math.PI / 6,
+      x: -0.05,
       ease: "power2.inOut",
     }, "<");
 

@@ -1,34 +1,64 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Center, SpotLight, PerspectiveCamera, Float } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoungeArea } from "./components/LoungeArea";
 import { ClubEnvironment } from "./components/ClubEnvironment";
+import { InteractiveCue } from "./components/InteractiveCue";
 
 export default function BookingScene() {
+  const cameraGroupRef = useRef<THREE.Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
   const groupRef = useRef<THREE.Group>(null);
+
+  // Initial state and GSAP timeline
+  useLayoutEffect(() => {
+    if (!cameraGroupRef.current || !cameraRef.current) return;
+    
+    // Start exactly where Pricing ended
+    gsap.set(cameraGroupRef.current.position, { x: 30, y: 3, z: 6 });
+    gsap.set(cameraGroupRef.current.rotation, { x: 0, y: Math.PI / 8, z: 0 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#booking",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+      }
+    });
+
+    // Dolly deep into the lounge, looking right at the interactive cue
+    tl.to(cameraGroupRef.current.position, {
+      x: 30,
+      y: 2,
+      z: 2,
+      ease: "power2.inOut",
+    })
+    .to(cameraGroupRef.current.rotation, {
+      y: Math.PI / 4,
+      x: -0.1,
+      ease: "power2.inOut",
+    }, "<");
+  }, []);
   
-  // Minimal idle motion to keep the space feeling alive but not distracting
   useFrame((state) => {
-    if (cameraRef.current) {
+    if (cameraGroupRef.current) {
       const time = state.clock.getElapsedTime();
       
-      // Extremely slow push-in over time
-      cameraRef.current.position.z = 8 - (Math.sin(time * 0.1) * 0.5);
-      
       // Gentle breathing
-      cameraRef.current.position.y = 2 + Math.sin(time * 0.4) * 0.1;
+      cameraGroupRef.current.position.y += Math.sin(time * 0.4) * 0.001;
 
       // Gentle look around based on mouse
       const targetX = (state.pointer.x * Math.PI) / 40;
       const targetY = (state.pointer.y * Math.PI) / 40;
       
-      cameraRef.current.rotation.y += 0.01 * (targetX - cameraRef.current.rotation.y);
-      cameraRef.current.rotation.x += 0.01 * (targetY - cameraRef.current.rotation.x);
+      cameraGroupRef.current.rotation.y += 0.01 * (-targetX - cameraGroupRef.current.rotation.y);
+      cameraGroupRef.current.rotation.x += 0.01 * (targetY - cameraGroupRef.current.rotation.x);
     }
     
     // Very subtle rotation of the environment itself
@@ -40,28 +70,30 @@ export default function BookingScene() {
   return (
     <>
       {/* Dimmed, moody lighting emphasizing the "end of the journey" */}
-      <ambientLight intensity={0.01} />
+      <ambientLight intensity={1.5} color="#001824" />
       
       {/* The Environment Layout (Club Architecture Base) */}
-      <ClubEnvironment zone="lounge" />
+      <ClubEnvironment zone="club" />
 
       {/* Specific Booking Lighting */}
       <SpotLight position={[0, 6, 2]} angle={0.6} penumbra={1} intensity={1.5} color="#c6a87c" castShadow />
       <SpotLight position={[-4, 4, -2]} angle={0.8} penumbra={1} intensity={0.5} color="#c6a87c" />
 
       {/* Camera positioned to view the Lounge */}
-      <PerspectiveCamera 
-        ref={cameraRef}
-        makeDefault 
-        fov={45} 
-        near={0.1} 
-        far={100} 
-        position={[0, 2, 8]}
-      />
+      <group ref={cameraGroupRef}>
+        <PerspectiveCamera 
+          ref={cameraRef}
+          makeDefault 
+          fov={45} 
+          near={0.1} 
+          far={100} 
+        />
+      </group>
 
       <Center>
         <group ref={groupRef}>
-          <LoungeArea />
+          {/* Interactive Cue floats dramatically in the foreground */}
+          <InteractiveCue position={[31, 2, 0]} />
         </group>
       </Center>
     </>

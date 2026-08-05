@@ -4,6 +4,7 @@ import React from "react";
 import { ClubFloor } from "./ClubFloor";
 import { ClubWalls } from "./ClubWalls";
 import { ClubCeiling } from "./ClubCeiling";
+import { ChalkDust } from "./ChalkDust";
 import { LoungeArea } from "./LoungeArea";
 import { AmbientLight, SpotLight } from "three";
 
@@ -45,6 +46,9 @@ export function ClubEnvironment({ zone }: ClubEnvironmentProps) {
         <ClubWalls width={40} depth={40} height={12} position={[0, 4, 0]} />
         <ClubCeiling type="ornate" position={[0, 10, 0]} />
         
+        {/* Particle Effects (Challenge Requirement) */}
+        <ChalkDust count={300} bounds={40} />
+
         {/* The Lounge, Bar, and Cue Display situated in the background behind the pool table */}
         <LoungeArea position={[-10, 0, -10]} rotation={[0, Math.PI / 4, 0]} />
       </group>
