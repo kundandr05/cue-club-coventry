@@ -8,6 +8,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
 import { Atmosphere } from "./components/Atmosphere";
+import { LuxuryFloor } from "./components/LuxuryFloor";
+import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { PendantLight } from "./components/PendantLight";
 
 export default function AboutScene() {
   const cameraGroupRef = useRef<THREE.Group>(null);
@@ -93,9 +96,17 @@ export default function AboutScene() {
       </group>
 
       <Atmosphere />
+      
+      {/* Non-reflective floor for performance, still adds grounding */}
+      <LuxuryFloor isReflective={false} position={[0, -2, 0]} />
+
+      <ArchitecturalPillars depth={-20} width={60} count={8} />
 
       <Center>
-        <PoolTable ref={tableRef} />
+        <group>
+          <PendantLight position={[0, 4.5, 0]} intensity={10} distance={20} />
+          <PoolTable ref={tableRef} />
+        </group>
       </Center>
     </>
   );

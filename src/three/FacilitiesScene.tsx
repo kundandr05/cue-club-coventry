@@ -10,6 +10,9 @@ import { PoolTable } from "./components/PoolTable";
 import { SnookerTable } from "./components/SnookerTable";
 import { LoungeArea } from "./components/LoungeArea";
 import { Atmosphere } from "./components/Atmosphere";
+import { LuxuryFloor } from "./components/LuxuryFloor";
+import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { PendantLight } from "./components/PendantLight";
 
 export default function FacilitiesScene() {
   const cameraGroupRef = useRef<THREE.Group>(null);
@@ -103,6 +106,12 @@ export default function FacilitiesScene() {
       <SpotLight position={[30, 4, 0]} angle={0.5} penumbra={1} intensity={2} color="#c6a87c" castShadow />
       <SpotLight position={[25, 5, -2]} angle={0.6} penumbra={1} intensity={1.5} color="#c6a87c" />
 
+      {/* Non-reflective luxury floor for performance across multiple tables */}
+      <LuxuryFloor isReflective={false} position={[0, -2, 0]} size={[200, 200]} />
+
+      {/* Background architectural framing spread across the wide scene */}
+      <ArchitecturalPillars depth={-40} width={120} count={16} height={30} />
+
       {/* Camera Rig (Scroll Driven) */}
       <group ref={cameraGroupRef}>
         {/* Drift Rig (Time Driven) */}
@@ -122,13 +131,22 @@ export default function FacilitiesScene() {
 
       {/* The Environment Layout */}
       {/* Pool Table at origin */}
-      <PoolTable ref={poolTableRef} />
+      <group>
+        <PendantLight position={[0, 4.5, 0]} intensity={8} distance={20} />
+        <PoolTable ref={poolTableRef} />
+      </group>
       
       {/* Snooker Table spaced to the right */}
-      <SnookerTable position={[15, 0, 0]} rotation={[0, Math.PI / 4, 0]} />
+      <group position={[15, 0, 0]} rotation={[0, Math.PI / 4, 0]}>
+        <PendantLight position={[0, 4.5, 0]} intensity={8} distance={20} />
+        <SnookerTable />
+      </group>
       
       {/* Lounge Area further right */}
-      <LoungeArea position={[30, -0.5, -2]} rotation={[0, -Math.PI / 8, 0]} />
+      <group position={[30, -0.5, -2]} rotation={[0, -Math.PI / 8, 0]}>
+        <PendantLight position={[0, 4.5, 0]} intensity={8} distance={20} />
+        <LoungeArea />
+      </group>
     </>
   );
 }

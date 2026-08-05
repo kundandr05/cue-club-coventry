@@ -43,8 +43,16 @@ export function Atmosphere() {
         Subtle global environment map for reflections 
         This provides a base level of lighting and reflection data to MeshPhysicalMaterials
         even in areas where SpotLights don't directly hit.
-      */}
       <Environment preset="night" environmentIntensity={0.2} />
+
+      {/* Global Fog for Depth and Volumetric atmosphere */}
+      <fog attach="fog" args={["#000000", 10, 50]} />
+
+      {/* Subtle Ceiling Glow (Fakes an ambient grid ceiling) */}
+      <mesh position={[0, 20, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[100, 100]} />
+        <meshBasicMaterial color="#05070a" />
+      </mesh>
     </group>
   );
 }

@@ -8,6 +8,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PoolTable } from "./components/PoolTable";
 import { Atmosphere } from "./components/Atmosphere";
+import { LuxuryFloor } from "./components/LuxuryFloor";
+import { ArchitecturalPillars } from "./components/ArchitecturalPillars";
+import { PendantLight } from "./components/PendantLight";
 
 export default function HeroScene() {
   const groupRef = useRef<THREE.Group>(null);
@@ -87,8 +90,17 @@ export default function HeroScene() {
         intensity={1}
         color="#ffffff"
       />
+      {/* Ambient moody light */}
+      <ambientLight intensity={0.2} color="#000510" />
 
+      {/* Cinematic Atmosphere (Particles, Fog) */}
       <Atmosphere />
+
+      {/* Grounding the scene with a highly reflective luxury floor */}
+      <LuxuryFloor isReflective={true} position={[0, -2, 0]} />
+
+      {/* Architectural boundary */}
+      <ArchitecturalPillars depth={-20} width={60} count={8} />
 
       <group ref={groupRef} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 1}>
         <group ref={parallaxGroupRef}>
@@ -97,6 +109,9 @@ export default function HeroScene() {
               <PoolTable />
             </Float>
           </Center>
+
+          {/* Premium Pendant Light hovering right over the table */}
+          <PendantLight position={[0, 4.5, 0]} intensity={10} distance={20} />
         </group>
       </group>
     </>

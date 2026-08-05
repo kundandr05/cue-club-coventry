@@ -5,9 +5,9 @@ import { useFrame } from "@react-three/fiber";
 import { Center, SpotLight, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LoungeArea } from "./components/LoungeArea";
 import { Atmosphere } from "./components/Atmosphere";
+import { LuxuryFloor } from "./components/LuxuryFloor";
 
 export default function FinaleScene() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -60,6 +60,9 @@ export default function FinaleScene() {
       </group>
 
       <Atmosphere />
+      
+      {/* Non-reflective luxury floor to ground the lounge */}
+      <LuxuryFloor isReflective={false} position={[0, -2, 0]} />
 
       <PerspectiveCamera 
         ref={cameraRef}
