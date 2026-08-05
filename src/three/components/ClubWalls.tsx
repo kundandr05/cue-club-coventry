@@ -71,16 +71,16 @@ export function ClubWalls({
       <instancedMesh ref={meshRef} args={[undefined, undefined, totalPanels]} receiveShadow castShadow>
         <boxGeometry args={[panelWidth, height, panelWidth]} />
         <meshStandardMaterial 
-          color="#050505" // Darker base
-          roughness={0.4} // Lower roughness to catch highlights (glossy paint/wood)
-          metalness={0.8} // High metalness for sharp specular reflections from spots
+          color="#e8e8e8" // Bright white/cream base
+          roughness={0.6} // More diffuse for a gallery feel
+          metalness={0.1} // Low metalness for matte wall paint
         />
       </instancedMesh>
       
-      {/* Baseboards (Solid black band at bottom) */}
+      {/* Baseboards (Solid white band at bottom) */}
       <mesh position={[0, 0.5, -depth/2]} receiveShadow>
         <boxGeometry args={[width, 1, 0.5]} />
-        <meshStandardMaterial color="#000000" />
+        <meshStandardMaterial color="#ffffff" />
       </mesh>
     </group>
   );

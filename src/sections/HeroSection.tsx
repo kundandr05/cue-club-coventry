@@ -44,7 +44,7 @@ export default function HeroSection() {
         ref={textRef} 
         className="relative z-10 container mx-auto px-6 lg:px-12 flex flex-col items-center justify-end text-center pb-24 h-full pointer-events-none"
       >
-        <div className="hero-text opacity-0 backdrop-blur-md bg-black/10 p-6 rounded-2xl border border-white/5 shadow-2xl flex flex-col items-center pointer-events-auto">
+        <div className="hero-text opacity-0 backdrop-blur-md bg-white/40 p-6 rounded-2xl border border-black/5 shadow-lg flex flex-col items-center pointer-events-auto">
           <p className="uppercase tracking-[0.4em] text-color-accent-gold text-[10px] md:text-xs font-medium mb-4">
             The Next Generation of Billiards
           </p>
@@ -58,10 +58,10 @@ export default function HeroSection() {
           
           <MagneticButton
             strength={30}
-            className="group relative flex items-center gap-4 bg-white/10 backdrop-blur-lg border border-white/20 text-white px-6 py-3 rounded-full font-medium overflow-hidden transition-all hover:bg-color-accent-gold hover:border-color-accent-gold"
+            className="group relative flex items-center gap-4 bg-black/5 backdrop-blur-lg border border-black/10 text-color-primary-white px-6 py-3 rounded-full font-medium overflow-hidden transition-all hover:bg-color-accent-gold hover:border-color-accent-gold hover:text-white"
           >
             <span className="text-sm">Book a Table</span>
-            <span className="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
+            <span className="bg-black/5 p-2 rounded-full group-hover:bg-white/20 transition-colors">
               <ArrowRight className="w-3 h-3" />
             </span>
           </MagneticButton>

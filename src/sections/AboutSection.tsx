@@ -56,11 +56,11 @@ export default function AboutSection() {
       <div className="relative z-10 w-full">
         {/* Block 1 */}
         <div className="h-screen flex items-center justify-start px-6 lg:px-24">
-          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/5 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
+          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/60 border border-black/5 p-8 md:p-12 rounded-2xl shadow-lg">
             <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-4">
               Our Heritage
             </h2>
-            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-light">
+            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-medium">
               We didn&apos;t just build a room; we built a sanctuary. A place where the outside world fades, leaving only the sound of the break and the quiet focus of competition.
             </p>
           </div>
@@ -68,11 +68,11 @@ export default function AboutSection() {
 
         {/* Block 2 */}
         <div className="h-[150vh] flex items-center justify-end px-6 lg:px-24 text-right pt-[25vh]">
-          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/5 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
+          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/60 border border-black/5 p-8 md:p-12 rounded-2xl shadow-lg">
             <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-4">
               The Craftsmanship
             </h2>
-            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-light">
+            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-medium">
               Professional-grade slates resting on polished marble. Custom lighting designed to eliminate shadows. Every detail has been obsessively engineered for the purist.
             </p>
           </div>
@@ -80,11 +80,11 @@ export default function AboutSection() {
 
         {/* Block 3 */}
         <div className="h-[150vh] flex items-center justify-start px-6 lg:px-24 pt-[25vh]">
-          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/5 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl">
+          <div className="max-w-xl about-text opacity-0 backdrop-blur-md bg-white/60 border border-black/5 p-8 md:p-12 rounded-2xl shadow-lg">
             <h2 className="text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium text-color-accent-gold mb-4">
               The Community
             </h2>
-            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-light">
+            <p className="text-xl md:text-2xl leading-relaxed text-color-primary-white font-medium">
               Between frames, the experience continues. Sink into the Chesterfield leather. Order from the premium bar. This is your club.
             </p>
           </div>

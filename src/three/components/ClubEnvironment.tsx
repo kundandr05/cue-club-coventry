@@ -13,26 +13,26 @@ interface ClubEnvironmentProps {
 
 export function ClubEnvironment({ zone }: ClubEnvironmentProps) {
   
-  // Teal and Orange cinematic lighting rig (Ref: Image 4)
+  // Bright Daylight Gallery lighting rig (White Theme Experiment)
   const renderLighting = () => (
     <>
-      {/* Deep Teal Ambient fill */}
-      <ambientLight intensity={1.5} color="#001824" />
+      {/* Soft bright daylight ambient fill */}
+      <ambientLight intensity={3.5} color="#ffffff" />
       
-      {/* Warm Orange Practical Glow */}
+      {/* Clean White Practical Glow */}
       <spotLight 
         position={[0, 5, 0]} 
-        color="#ff8c00" 
-        intensity={5} 
+        color="#f8fbff" 
+        intensity={3} 
         angle={1.2} 
         penumbra={1} 
         distance={20} 
         castShadow
       />
 
-      {/* Wall Washers (Highlighting the ribbed walls) */}
-      <spotLight position={[-15, 6, -15]} color="#ff8c00" intensity={2} angle={0.8} penumbra={1} distance={20} target-position={[-20, 0, -20]} />
-      <spotLight position={[15, 6, -15]} color="#ff8c00" intensity={2} angle={0.8} penumbra={1} distance={20} target-position={[20, 0, -20]} />
+      {/* Wall Washers (Clean gallery spotlights) */}
+      <spotLight position={[-15, 6, -15]} color="#ffffff" intensity={1.5} angle={0.8} penumbra={1} distance={20} target-position={[-20, 0, -20]} />
+      <spotLight position={[15, 6, -15]} color="#ffffff" intensity={1.5} angle={0.8} penumbra={1} distance={20} target-position={[20, 0, -20]} />
     </>
   );
 
