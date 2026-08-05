@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Loader } from "@/components/layout/Loader";
 import { HeroTableScene } from "@/three/scenes/HeroTableScene";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -162,6 +165,11 @@ export default function Home() {
       {/* ── Loader ── */}
       <Loader onLoaded={() => setLoaded(true)} />
 
+      {/* ── Premium Extras ── */}
+      {loaded && <CustomCursor />}
+      {loaded && <ScrollProgress />}
+      {loaded && <FloatingCTA />}
+
       {/* ── Fixed Navbar ── */}
       <Navbar visible={loaded} />
 
@@ -177,6 +185,7 @@ export default function Home() {
             HERO
         ════════════════════════════════════ */}
         <section id="hero-section" className="w-full h-screen flex flex-col justify-end p-8 md:p-20 pointer-events-none">
+          <div className="absolute top-8 right-8 md:right-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">01 / 05</div>
           <div className="mb-4">
             <span className="font-mono text-[10px] text-brass tracking-[0.4em] uppercase">Est. Coventry — Since 1994</span>
           </div>
@@ -199,6 +208,7 @@ export default function Home() {
             ABOUT
         ════════════════════════════════════ */}
         <section id="about-section" className="w-full h-screen flex items-center p-8 md:p-20 pointer-events-none">
+          <div className="absolute top-8 right-8 md:right-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">02 / 05</div>
           <div id="about-text" className="max-w-xl opacity-0">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-8 h-[1px] bg-brass" />
@@ -225,6 +235,7 @@ export default function Home() {
             BOOKING
         ════════════════════════════════════ */}
         <section id="booking-section" className="w-full h-screen flex items-center justify-end p-8 md:p-20 pointer-events-auto">
+          <div className="absolute top-8 right-8 md:right-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">03 / 05</div>
           <div id="booking-card" className="w-full max-w-md opacity-0 bg-black/60 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 shadow-2xl">
             <div className="flex items-center space-x-3 mb-2">
               <div className="w-8 h-[1px] bg-brass" />
@@ -239,6 +250,7 @@ export default function Home() {
             MEMBERSHIP
         ════════════════════════════════════ */}
         <section id="membership-section" className="w-full h-screen flex items-center p-8 md:p-20 pointer-events-auto">
+          <div className="absolute top-8 right-8 md:right-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">04 / 05</div>
           <div id="membership-content" className="max-w-lg opacity-0">
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-8 h-[1px] bg-brass" />

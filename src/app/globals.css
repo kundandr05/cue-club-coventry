@@ -24,6 +24,16 @@ body {
   color: var(--color-porcelain);
   font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+* {
+  cursor: none;
+}
+
+::selection {
+  background: rgba(201, 161, 90, 0.3);
+  color: var(--color-porcelain);
 }
 
 h1, h2, h3, h4, h5, h6, .font-display {
