@@ -69,7 +69,7 @@ export default function TablesFacilitiesSection() {
               The Snooker Room
             </h2>
             <p className="text-2xl md:text-4xl font-medium leading-tight text-color-primary-white">
-              The purist's game. Full-size tables bathed in focused illumination, waiting for centuries to be built.
+              The purist&apos;s game. Full-size tables bathed in focused illumination, waiting for centuries to be built.
             </p>
           </div>
         </div>

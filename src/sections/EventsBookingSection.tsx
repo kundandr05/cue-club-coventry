@@ -81,7 +81,7 @@ export default function EventsBookingSection() {
                 The Coventry Classic
               </h4>
               <p className="text-xl text-gray-400 max-w-2xl">
-                The city's premier invitational. Watch the region's finest compete on professional slates.
+                The city&apos;s premier invitational. Watch the region&apos;s finest compete on professional slates.
               </p>
             </div>
 
