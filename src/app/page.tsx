@@ -2,8 +2,7 @@ import HeroSection from '@/sections/HeroSection';
 import AboutSection from '@/sections/AboutSection';
 import TablesFacilitiesSection from '@/sections/TablesFacilitiesSection';
 import PricingSection from '@/sections/PricingSection';
-import EventsSection from '@/sections/EventsSection';
-import BookTableSection from '@/sections/BookTableSection';
+import EventsBookingSection from '@/sections/EventsBookingSection';
 import ContactSection from '@/sections/ContactSection';
 
 export default function Home() {
@@ -17,8 +16,7 @@ export default function Home() {
       <AboutSection />
       <TablesFacilitiesSection />
       <PricingSection />
-      <EventsSection />
-      <BookTableSection />
+      <EventsBookingSection />
       <ContactSection />
     </main>
   );
