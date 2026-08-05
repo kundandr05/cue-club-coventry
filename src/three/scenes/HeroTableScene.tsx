@@ -220,6 +220,54 @@ function SceneRig({ loaded }: { loaded: boolean }) {
           scrub: true,
         }
       });
+      // ScrollTrigger: Macro Dive for Membership
+      gsap.to(cameraGroupRef.current.position, {
+        y: 1,
+        z: 2.5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#booking-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      gsap.to(cameraGroupRef.current.rotation, {
+        x: -0.05,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#booking-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      // ScrollTrigger: Fade out / Pull back for Footer
+      gsap.to(cameraGroupRef.current.position, {
+        y: 4,
+        z: 15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      gsap.to(cameraGroupRef.current.rotation, {
+        x: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
     }
   }, [loaded]);
 

@@ -96,6 +96,21 @@ export default function Home() {
           }
         }
       );
+
+      // Fade in membership content on scroll
+      gsap.fromTo("#membership-content",
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1,
+          x: 0,
+          scrollTrigger: {
+            trigger: "#membership-section",
+            start: "top center",
+            end: "center center",
+            scrub: true,
+          }
+        }
+      );
     }
   }, [loaded]);
 
@@ -191,6 +206,68 @@ export default function Home() {
                 </button>
               </form>
             )}
+          </div>
+        </section>
+
+        {/* Section 4: Membership & Pricing */}
+        <section id="membership-section" className="w-full h-screen flex items-center justify-start p-8 md:p-16 pointer-events-none">
+          <div id="membership-content" className="max-w-lg bg-ink/70 backdrop-blur-md p-8 rounded-2xl border border-brass/30 pointer-events-auto">
+            <h2 className="font-display text-3xl md:text-5xl text-porcelain uppercase mb-2">Club Membership</h2>
+            <div className="w-12 h-1 bg-brass mb-6"></div>
+            
+            <p className="text-smoke font-light mb-8">
+              Join an exclusive community of players. Membership grants priority booking, tournament entry, and private lounge access.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex justify-between items-end border-b border-white/10 pb-4">
+                <div>
+                  <h3 className="font-display uppercase tracking-widest text-lg">Standard</h3>
+                  <p className="text-xs text-smoke">Access to pool tables</p>
+                </div>
+                <div className="font-mono text-brass text-xl">£25 <span className="text-xs text-smoke">/mo</span></div>
+              </div>
+              
+              <div className="flex justify-between items-end border-b border-white/10 pb-4">
+                <div>
+                  <h3 className="font-display uppercase tracking-widest text-lg">Premium</h3>
+                  <p className="text-xs text-smoke">Snooker & Private Lounge</p>
+                </div>
+                <div className="font-mono text-brass text-xl">£50 <span className="text-xs text-smoke">/mo</span></div>
+              </div>
+            </div>
+
+            <button className="w-full mt-8 bg-transparent border-2 border-brass text-brass hover:bg-brass hover:text-ink font-display uppercase tracking-widest py-4 rounded-lg transition-colors">
+              Apply Now
+            </button>
+          </div>
+        </section>
+
+        {/* Section 5: Footer */}
+        <section id="footer-section" className="w-full min-h-[50vh] flex flex-col items-center justify-end p-8 md:p-16 pb-16 pointer-events-auto bg-gradient-to-t from-black to-transparent">
+          <h2 className="font-display text-4xl text-brass uppercase mb-12">The Cue Club</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl text-center md:text-left mb-16">
+            <div>
+              <h4 className="font-mono text-xs uppercase tracking-widest text-smoke mb-4">Location</h4>
+              <p className="font-light text-sm text-porcelain">12 Precision Way<br/>Coventry, CV1 2AB</p>
+            </div>
+            <div>
+              <h4 className="font-mono text-xs uppercase tracking-widest text-smoke mb-4">Hours</h4>
+              <p className="font-light text-sm text-porcelain">Monday - Sunday<br/>12:00 PM - 02:00 AM</p>
+            </div>
+            <div>
+              <h4 className="font-mono text-xs uppercase tracking-widest text-smoke mb-4">Contact</h4>
+              <p className="font-light text-sm text-porcelain">hello@cueclubcoventry.com<br/>+44 (0) 241 234 5678</p>
+            </div>
+          </div>
+
+          <div className="w-full max-w-4xl border-t border-white/10 pt-8 flex justify-between items-center text-xs text-smoke">
+            <p>&copy; {new Date().getFullYear()} Cue Club Coventry.</p>
+            <div className="space-x-4">
+              <a href="#" className="hover:text-brass transition-colors">Instagram</a>
+              <a href="#" className="hover:text-brass transition-colors">Twitter</a>
+            </div>
           </div>
         </section>
 
