@@ -29,8 +29,8 @@ export function ClubCeiling({
 
         {/* Outer glowing ring */}
         <mesh position={[0, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[9.5, 10, 64]} />
-          <meshStandardMaterial color="#c6a87c" emissive="#c6a87c" emissiveIntensity={2} />
+          <ringGeometry args={[9.5, 10, 128]} />
+          <meshStandardMaterial color="#ff8c00" emissive="#ff8c00" emissiveIntensity={5} />
         </mesh>
 
         {/* Mid carved dome (inverted cone/cylinder) */}
@@ -41,8 +41,8 @@ export function ClubCeiling({
 
         {/* Inner glowing ring */}
         <mesh position={[0, 1.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[7.5, 8, 64]} />
-          <meshStandardMaterial color="#c6a87c" emissive="#c6a87c" emissiveIntensity={3} />
+          <ringGeometry args={[7.5, 8, 128]} />
+          <meshStandardMaterial color="#ff8c00" emissive="#ff8c00" emissiveIntensity={6} />
         </mesh>
 
         {/* Inner dome */}
@@ -53,8 +53,8 @@ export function ClubCeiling({
 
         {/* Center Chandelier Core */}
         <mesh position={[0, 0, 0]} receiveShadow>
-          <cylinderGeometry args={[1.5, 3, 3, 32]} />
-          <meshStandardMaterial color="#000000" metalness={0.8} roughness={0.2} />
+          <cylinderGeometry args={[1.5, 3, 3, 64]} />
+          <meshStandardMaterial color="#ff8c00" emissive="#ff8c00" emissiveIntensity={4} metalness={1} roughness={0} />
         </mesh>
       </group>
     );

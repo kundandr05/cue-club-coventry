@@ -16,18 +16,22 @@ export function ClubEnvironment({ zone }: ClubEnvironmentProps) {
   const renderLighting = () => (
     <>
       {/* Deep Teal Ambient fill */}
-      <ambientLight intensity={0.5} color="#001824" />
+      <ambientLight intensity={1.5} color="#001824" />
       
       {/* Warm Orange Practical Glow */}
       <spotLight 
         position={[0, 5, 0]} 
         color="#ff8c00" 
-        intensity={2} 
+        intensity={5} 
         angle={1.2} 
         penumbra={1} 
         distance={20} 
         castShadow
       />
+
+      {/* Wall Washers (Highlighting the ribbed walls) */}
+      <spotLight position={[-15, 6, -15]} color="#ff8c00" intensity={2} angle={0.8} penumbra={1} distance={20} target-position={[-20, 0, -20]} />
+      <spotLight position={[15, 6, -15]} color="#ff8c00" intensity={2} angle={0.8} penumbra={1} distance={20} target-position={[20, 0, -20]} />
     </>
   );
 

@@ -2,7 +2,7 @@
 
 import { useRef, useLayoutEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Center, SpotLight, Float, MeshReflectorMaterial, Box } from "@react-three/drei";
+import { Center, Float, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,64 +13,76 @@ import { useStore } from "@/store/useStore";
 
 export default function HeroScene() {
   const groupRef = useRef<THREE.Group>(null);
-  const parallaxGroupRef = useRef<THREE.Group>(null);
-  const lightRef = useRef<THREE.SpotLight>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null);
+  const cameraGroupRef = useRef<THREE.Group>(null);
 
   const isAppLoaded = useStore((state) => state.isAppLoaded);
 
   // Cinematic Loading Animation (Entry)
   useLayoutEffect(() => {
-    if (!groupRef.current) return;
+    if (!cameraGroupRef.current || !cameraRef.current) return;
     
-    // Initial State: Table is rotated and lower, ball is invisible
     if (!isAppLoaded) {
-      gsap.set(groupRef.current.position, { y: -5 });
-      gsap.set(groupRef.current.rotation, { x: Math.PI / 4, y: Math.PI / 4 });
+      // Start low and far
+      gsap.set(cameraGroupRef.current.position, { y: 1, z: 12 });
+      gsap.set(cameraRef.current.rotation, { x: 0.1 }); // Look slightly up
       return;
     }
 
-    
     const tl = gsap.timeline();
     
-    // Animate table up and into perspective
-    tl.to(groupRef.current.position, {
-      y: 0,
-      duration: 2.5,
-      ease: "power4.out"
+    // Slow, elegant crane up and push in
+    tl.to(cameraGroupRef.current.position, {
+      y: 2.5,
+      z: 7,
+      duration: 3,
+      ease: "power3.out"
     })
-    .to(groupRef.current.rotation, {
-      x: 0,
-      y: 0,
-      duration: 2.5,
-      ease: "power4.out"
+    .to(cameraRef.current.rotation, {
+      x: -0.1, // Look slightly down at the table
+      duration: 3,
+      ease: "power3.out"
     }, "<");
     
-    // Scroll transition choreography
-    gsap.to(groupRef.current.rotation, {
-      y: Math.PI, // rotate 180 degrees on scroll
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 1
-      }
-    });
+    // Scroll transition choreography (rotate the table as we scroll down)
+    if (groupRef.current) {
+      gsap.to(groupRef.current.rotation, {
+        y: Math.PI, 
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1
+        }
+      });
+    }
 
   }, [isAppLoaded]);
 
-  // Mouse Parallax & Continuous Cinematic Drift
+  // Handheld camera feel & continuous cinematic drift
   useFrame((state, delta) => {
-    if (parallaxGroupRef.current) {
-      // Continuous slow drift for cinematic feel
-      parallaxGroupRef.current.rotation.y += delta * 0.05;
-
-      // Gentle floating/breathing effect combined with mouse parallax
-      const targetX = (state.pointer.x * Math.PI) / 20;
-      const targetY = (state.pointer.y * Math.PI) / 20;
+    if (cameraGroupRef.current) {
+      const time = state.clock.getElapsedTime();
       
-      parallaxGroupRef.current.rotation.x += 0.02 * (targetY - parallaxGroupRef.current.rotation.x);
-      parallaxGroupRef.current.rotation.y += 0.02 * (targetX - parallaxGroupRef.current.rotation.y);
+      // Extremely slow continuous push-in (dolly)
+      cameraGroupRef.current.position.z -= delta * 0.05;
+
+      // Subtle handheld breathing (vertical and horizontal drift)
+      cameraGroupRef.current.position.y += Math.sin(time * 0.5) * 0.001;
+      cameraGroupRef.current.position.x += Math.cos(time * 0.3) * 0.001;
+
+      // Smooth mouse parallax applied to camera rotation
+      const targetX = (state.pointer.x * Math.PI) / 30;
+      const targetY = (state.pointer.y * Math.PI) / 30;
+      
+      cameraGroupRef.current.rotation.y += 0.02 * (-targetX - cameraGroupRef.current.rotation.y);
+      cameraGroupRef.current.rotation.x += 0.02 * (targetY - cameraGroupRef.current.rotation.x);
+    }
+    
+    if (groupRef.current) {
+      // Slow orbit of the environment
+      groupRef.current.rotation.y += delta * 0.02;
     }
   });
 
@@ -79,17 +91,20 @@ export default function HeroScene() {
       {/* Grounding the scene with the physical VIP architecture */}
       <ClubEnvironment zone="hero" />
 
-      <group ref={groupRef} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 1}>
-        <group ref={parallaxGroupRef}>
-          <Center>
-            <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
-              <PoolTable />
-            </Float>
-          </Center>
+      {/* Camera Rig */}
+      <group ref={cameraGroupRef}>
+        <PerspectiveCamera ref={cameraRef} makeDefault fov={45} near={0.1} far={100} />
+      </group>
 
-          {/* Premium Pendant Light hovering right over the table */}
-          <PendantLight position={[0, 4.5, 0]} intensity={10} distance={20} />
-        </group>
+      <group ref={groupRef} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 1}>
+        <Center>
+          <Float speed={1.5} rotationIntensity={0.05} floatIntensity={0.1}>
+            <PoolTable />
+          </Float>
+        </Center>
+
+        {/* Premium Pendant Light hovering right over the table */}
+        <PendantLight position={[0, 4.5, 0]} intensity={10} distance={20} />
       </group>
     </>
   );

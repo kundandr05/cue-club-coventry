@@ -42,27 +42,27 @@ export default function HeroSection() {
       {/* DOM Overlay - Content */}
       <div 
         ref={textRef} 
-        className="relative z-10 container mx-auto px-6 lg:px-12 flex flex-col items-center justify-center text-center mt-32 pointer-events-none"
+        className="relative z-10 container mx-auto px-6 lg:px-12 flex flex-col items-center justify-end text-center pb-24 h-full pointer-events-none"
       >
-        <p className="hero-text opacity-0 uppercase tracking-[0.3em] text-color-accent-gold text-sm font-medium mb-6">
-          The Next Generation of Billiards
-        </p>
-        
-        <h1 className="hero-text opacity-0 text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter mb-8 leading-[0.9]">
-          Cue Club <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary-white to-color-secondary-white">
-            Coventry
-          </span>
-        </h1>
-        
-        <div className="hero-text opacity-0 pointer-events-auto">
+        <div className="hero-text opacity-0 backdrop-blur-md bg-black/10 p-6 rounded-2xl border border-white/5 shadow-2xl flex flex-col items-center pointer-events-auto">
+          <p className="uppercase tracking-[0.4em] text-color-accent-gold text-[10px] md:text-xs font-medium mb-4">
+            The Next Generation of Billiards
+          </p>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 leading-[0.9]">
+            Cue Club <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-color-primary-white to-color-secondary-white">
+              Coventry
+            </span>
+          </h1>
+          
           <MagneticButton
-            strength={40}
-            className="group relative flex items-center gap-4 bg-color-primary-white text-color-primary-black px-8 py-4 rounded-full font-medium overflow-hidden transition-colors hover:bg-color-accent-gold hover:text-white"
+            strength={30}
+            className="group relative flex items-center gap-4 bg-white/10 backdrop-blur-lg border border-white/20 text-white px-6 py-3 rounded-full font-medium overflow-hidden transition-all hover:bg-color-accent-gold hover:border-color-accent-gold"
           >
-            <span>Book a Table</span>
-            <span className="bg-color-primary-black/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
-              <ArrowRight className="w-4 h-4" />
+            <span className="text-sm">Book a Table</span>
+            <span className="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
+              <ArrowRight className="w-3 h-3" />
             </span>
           </MagneticButton>
         </div>
