@@ -5,6 +5,7 @@ import { View } from "@react-three/drei";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { fadeUp } from "@/animations/fadeUp";
+import { MagneticButton } from "@/components/MagneticButton";
 
 const FinaleScene = dynamic(() => import("@/three/FinaleScene"), { ssr: false });
 
@@ -87,9 +88,12 @@ export default function ContactSection() {
           {/* Action */}
           <div className="finale-element opacity-0 flex flex-col items-start md:items-end text-left md:text-right">
             <h4 className="text-sm uppercase tracking-[0.2em] text-color-accent-gold mb-6">Experience</h4>
-            <button className="px-8 py-4 border border-white/20 text-white uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-transparent transition-all duration-300 mb-6 pointer-events-auto">
+            <MagneticButton 
+              strength={30}
+              className="px-8 py-4 border border-white/20 text-white uppercase tracking-widest text-sm hover:bg-white hover:text-black hover:border-transparent transition-all duration-300 mb-6 pointer-events-auto rounded-full"
+            >
               Book a Table
-            </button>
+            </MagneticButton>
             <div className="flex gap-6">
               <a href="#" className="text-gray-400 hover:text-white transition-colors pointer-events-auto">IG</a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors pointer-events-auto">X</a>

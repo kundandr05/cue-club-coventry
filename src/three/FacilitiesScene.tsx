@@ -107,7 +107,14 @@ export default function FacilitiesScene() {
       <group ref={cameraGroupRef}>
         {/* Drift Rig (Time Driven) */}
         <group ref={driftRef}>
-          <PerspectiveCamera makeDefault fov={45} near={0.1} far={100} />
+          <PerspectiveCamera 
+            makeDefault 
+            near={0.1} 
+            far={100} 
+            // Dynamically adjust FOV based on window aspect ratio 
+            // (portrait mode gets a wider FOV so the tables aren't cut off)
+            fov={typeof window !== 'undefined' && window.innerWidth < 768 ? 75 : 45}
+          />
         </group>
       </group>
 

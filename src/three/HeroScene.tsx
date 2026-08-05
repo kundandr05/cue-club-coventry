@@ -90,7 +90,7 @@ export default function HeroScene() {
 
       <Atmosphere />
 
-      <group ref={groupRef}>
+      <group ref={groupRef} scale={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 1}>
         <group ref={parallaxGroupRef}>
           <Center>
             <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>

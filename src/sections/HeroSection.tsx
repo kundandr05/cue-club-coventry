@@ -5,7 +5,9 @@ import { View } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/animations/fadeUp";
 import HeroScene from "@/three/HeroScene";
+import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
+import { MagneticButton } from "@/components/MagneticButton";
 
 export default function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
@@ -50,22 +52,16 @@ export default function HeroSection() {
           </span>
         </h1>
         
-        <p className="hero-text opacity-0 text-color-secondary-white max-w-xl text-lg md:text-xl mb-12">
-          Experience a cinematic, Awwwards-quality environment designed for the modern player. Luxury, precision, and atmosphere combined.
-        </p>
-        
-        {/* CTA Button needs pointer-events-auto so it can be clicked */}
         <div className="hero-text opacity-0 pointer-events-auto">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <MagneticButton
+            strength={40}
             className="group relative flex items-center gap-4 bg-color-primary-white text-color-primary-black px-8 py-4 rounded-full font-medium overflow-hidden transition-colors hover:bg-color-accent-gold hover:text-white"
           >
             <span>Book a Table</span>
             <span className="bg-color-primary-black/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">
               <ArrowRight className="w-4 h-4" />
             </span>
-          </motion.button>
+          </MagneticButton>
         </div>
       </div>
 

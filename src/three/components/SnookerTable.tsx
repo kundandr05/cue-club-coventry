@@ -1,11 +1,20 @@
 "use client";
 
-import * as React from "react";
 import { forwardRef } from "react";
-import { Box, Sphere } from "@react-three/drei";
+import { Box, Sphere, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
+// Preload the GLTF (Commented out until asset exists)
+// useGLTF.preload('/models/snooker_table.glb')
+
 export const SnookerTable = forwardRef<THREE.Group, React.ComponentProps<'group'>>((props, ref) => {
+  
+  // TOGGLE THIS TO TRUE WHEN /public/models/snooker_table.glb IS ADDED
+  const USE_GLTF = false;
+  
+  // To allow easy swap with GLB later:
+  // const { scene } = useGLTF('/models/snooker_table.glb')
+  // if (USE_GLTF && scene) return <primitive ref={ref} object={scene} {...props} />
   return (
     <group ref={ref} {...props}>
       {/* Snooker Table Bed (Larger, Deep Green Velvet Felt) */}

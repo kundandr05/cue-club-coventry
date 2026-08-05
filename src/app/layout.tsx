@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import GlobalCanvasWrapper from "@/components/canvas/GlobalCanvasWrapper";
+import { CustomCursor } from "@/components/CustomCursor";
+import { AudioManager } from "@/components/AudioManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,7 +76,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <LenisProvider>
+          <CustomCursor />
           {children}
+          <AudioManager />
         </LenisProvider>
         <GlobalCanvasWrapper />
       </body>

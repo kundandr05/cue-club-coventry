@@ -1,11 +1,20 @@
 "use client";
 
-import * as React from "react";
 import { forwardRef } from "react";
-import { Box, Cylinder, Sphere } from "@react-three/drei";
+import { Box, Cylinder, Sphere, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
+// Preload the GLTF (Commented out until asset exists)
+// useGLTF.preload('/models/lounge_area.glb')
+
 export const LoungeArea = forwardRef<THREE.Group, React.ComponentProps<'group'>>((props, ref) => {
+  
+  // TOGGLE THIS TO TRUE WHEN /public/models/lounge_area.glb IS ADDED
+  const USE_GLTF = false;
+  
+  // To allow easy swap with GLB later:
+  // const { scene } = useGLTF('/models/lounge_area.glb')
+  // if (USE_GLTF && scene) return <primitive ref={ref} object={scene} {...props} />
   return (
     <group ref={ref} {...props}>
       {/* Premium Bar Surface (Polished Black Marble) */}

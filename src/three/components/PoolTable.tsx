@@ -1,14 +1,20 @@
 "use client";
 
-import * as React from "react";
 import { forwardRef } from "react";
 import * as THREE from "three";
-import { Box, Cylinder, Sphere } from "@react-three/drei";
+import { Box, Cylinder, Sphere, useGLTF } from "@react-three/drei";
+
+// Preload the GLTF (Commented out until asset exists)
+// useGLTF.preload('/models/pool_table.glb')
 
 export const PoolTable = forwardRef<THREE.Group, React.ComponentProps<'group'>>((props, ref) => {
   
+  // TOGGLE THIS TO TRUE WHEN /public/models/pool_table.glb IS ADDED
+  const USE_GLTF = false;
+  
   // To allow easy swap with GLB later:
-  // if (gltf) return <primitive object={gltf.scene} {...props} />
+  // const { scene } = useGLTF('/models/pool_table.glb')
+  // if (USE_GLTF && scene) return <primitive ref={ref} object={scene} {...props} />
 
   return (
     <group ref={ref} {...props}>

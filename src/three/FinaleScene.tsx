@@ -64,7 +64,7 @@ export default function FinaleScene() {
       <PerspectiveCamera 
         ref={cameraRef}
         makeDefault 
-        fov={45} 
+        fov={typeof window !== 'undefined' && window.innerWidth < 768 ? 60 : 35} 
         near={0.1} 
         far={100} 
         position={[0, 2, 7.5]}

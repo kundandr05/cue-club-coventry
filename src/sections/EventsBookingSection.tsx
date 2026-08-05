@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { fadeUp } from "@/animations/fadeUp";
+import { MagneticButton } from "@/components/MagneticButton";
 
 const BookingScene = dynamic(() => import("@/three/BookingScene"), { ssr: false });
 
@@ -123,15 +124,16 @@ export default function EventsBookingSection() {
                   exit={{ opacity: 0, y: -20 }}
                   className="flex justify-center"
                 >
-                  <button 
+                  <MagneticButton 
                     onClick={() => setBookingStep("date")}
-                    className="group relative overflow-hidden px-12 py-6 border border-white/20 bg-white/5 backdrop-blur-md pointer-events-auto"
+                    className="group relative overflow-hidden px-12 py-6 border border-white/20 bg-white/5 backdrop-blur-md pointer-events-auto rounded-full"
+                    strength={40}
                   >
                     <div className="absolute inset-0 bg-color-accent-gold scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                     <span className="relative z-10 text-xl md:text-2xl font-medium tracking-widest text-white group-hover:text-black transition-colors duration-500">
                       SELECT DATE
                     </span>
-                  </button>
+                  </MagneticButton>
                 </motion.div>
               )}
 
@@ -145,18 +147,19 @@ export default function EventsBookingSection() {
                   className="grid grid-cols-2 md:grid-cols-4 gap-4"
                 >
                   {["Today", "Tomorrow", "Friday", "Saturday"].map((day) => (
-                    <button
+                    <MagneticButton
                       key={day}
                       onClick={() => {
                         setSelectedDate(day);
                         setBookingStep("confirm");
                       }}
-                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-8 hover:border-color-accent-gold transition-colors duration-300 text-center pointer-events-auto"
+                      className="group border border-white/10 bg-black/40 backdrop-blur-md p-8 hover:border-color-accent-gold transition-colors duration-300 text-center pointer-events-auto rounded-xl w-full h-full"
+                      strength={15}
                     >
                       <h4 className="text-2xl text-white group-hover:text-color-accent-gold transition-colors duration-300">
                         {day}
                       </h4>
-                    </button>
+                    </MagneticButton>
                   ))}
                 </motion.div>
               )}
