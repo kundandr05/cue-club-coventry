@@ -15,8 +15,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cue Club Coventry",
-  description: "Awwwards-quality digital experience for Cue Club Coventry.",
+  title: {
+    default: "Cue Club Coventry | The Premier Billiards Experience",
+    template: "%s | Cue Club Coventry"
+  },
+  description: "Experience the pinnacle of cue sports in Coventry. Premium snooker tables, professional pool slates, and a luxurious lounge atmosphere.",
+  keywords: ["Cue Club", "Coventry", "Snooker", "Pool", "Billiards", "Lounge", "Tournaments"],
+  authors: [{ name: "Cue Club Coventry" }],
+  creator: "Cue Club Coventry",
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://cueclubcoventry.com",
+    title: "Cue Club Coventry",
+    description: "Experience the pinnacle of cue sports in Coventry.",
+    siteName: "Cue Club Coventry",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cue Club Coventry",
+    description: "Experience the pinnacle of cue sports in Coventry.",
+  },
+  alternates: {
+    canonical: "https://cueclubcoventry.com"
+  }
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "name": "Cue Club Coventry",
+  "image": "https://cueclubcoventry.com/og-image.jpg",
+  "description": "Experience the pinnacle of cue sports in Coventry. Premium snooker tables, professional pool slates, and a luxurious lounge atmosphere.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Precision Way",
+    "addressLocality": "Coventry",
+    "postalCode": "CV1 2AB",
+    "addressCountry": "UK"
+  },
+  "telephone": "+442412345678",
+  "openingHours": "Mo-Su 12:00-02:00"
 };
 
 export default function RootLayout({
@@ -30,6 +69,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         id="root"
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <LenisProvider>
           {children}
         </LenisProvider>
