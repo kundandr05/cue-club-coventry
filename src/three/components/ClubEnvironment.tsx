@@ -4,10 +4,11 @@ import React from "react";
 import { ClubFloor } from "./ClubFloor";
 import { ClubWalls } from "./ClubWalls";
 import { ClubCeiling } from "./ClubCeiling";
+import { LoungeArea } from "./LoungeArea";
 import { AmbientLight, SpotLight } from "three";
 
 interface ClubEnvironmentProps {
-  zone: "hero" | "lounge" | "facilities";
+  zone: "club" | "lounge" | "facilities";
 }
 
 export function ClubEnvironment({ zone }: ClubEnvironmentProps) {
@@ -35,14 +36,17 @@ export function ClubEnvironment({ zone }: ClubEnvironmentProps) {
     </>
   );
 
-  if (zone === "hero") {
-    // Reference Image 3: The VIP Monolith
+  if (zone === "club") {
+    // Reference Image 3 & 4: Continuous VIP Club Environment
     return (
       <group>
         {renderLighting()}
         <ClubFloor type="marble" position={[0, -2, 0]} />
         <ClubWalls width={40} depth={40} height={12} position={[0, 4, 0]} />
         <ClubCeiling type="ornate" position={[0, 10, 0]} />
+        
+        {/* The Lounge, Bar, and Cue Display situated in the background behind the pool table */}
+        <LoungeArea position={[-10, 0, -10]} rotation={[0, Math.PI / 4, 0]} />
       </group>
     );
   }

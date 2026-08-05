@@ -89,7 +89,7 @@ export default function HeroScene() {
   return (
     <>
       {/* Grounding the scene with the physical VIP architecture */}
-      <ClubEnvironment zone="hero" />
+      <ClubEnvironment zone="club" />
 
       {/* Camera Rig */}
       <group ref={cameraGroupRef}>
