@@ -6,6 +6,9 @@ import { PerspectiveCamera } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function DustMotes() {
   const pointsRef = useRef<THREE.Points>(null);
@@ -86,6 +89,69 @@ function PoolTable() {
   );
 }
 
+function LoungeEnvironment() {
+  return (
+    <group>
+      {/* Back Wall */}
+      <mesh position={[0, 4, -15]} receiveShadow>
+        <boxGeometry args={[40, 15, 1]} />
+        <meshStandardMaterial color="#050505" roughness={0.9} />
+      </mesh>
+      
+      {/* Side Walls */}
+      <mesh position={[-15, 4, 0]} receiveShadow>
+        <boxGeometry args={[1, 15, 40]} />
+        <meshStandardMaterial color="#050505" roughness={0.9} />
+      </mesh>
+      <mesh position={[15, 4, 0]} receiveShadow>
+        <boxGeometry args={[1, 15, 40]} />
+        <meshStandardMaterial color="#050505" roughness={0.9} />
+      </mesh>
+
+      {/* Floor */}
+      <mesh position={[0, -1.1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[40, 40]} />
+        <meshStandardMaterial color="#020202" roughness={0.8} />
+      </mesh>
+
+      {/* Sofa Silhouette (Left) */}
+      <mesh position={[-8, 0, -8]} receiveShadow>
+        <boxGeometry args={[6, 2.5, 3]} />
+        <meshStandardMaterial color="#080504" roughness={0.7} />
+      </mesh>
+      
+      {/* Sofa Silhouette (Right) */}
+      <mesh position={[8, 0, -8]} receiveShadow>
+        <boxGeometry args={[6, 2.5, 3]} />
+        <meshStandardMaterial color="#080504" roughness={0.7} />
+      </mesh>
+
+      {/* Cue Racks Silhouette */}
+      <mesh position={[0, 3, -14.4]} receiveShadow>
+        <boxGeometry args={[8, 6, 0.2]} />
+        <meshStandardMaterial color="#1a0f0a" roughness={0.8} />
+      </mesh>
+
+      {/* Wall Sconces */}
+      <group position={[-10, 5, -14.4]}>
+        <mesh>
+          <boxGeometry args={[0.5, 1, 0.2]} />
+          <meshBasicMaterial color="#C9A15A" />
+        </mesh>
+        <pointLight intensity={2} distance={15} color="#C9A15A" castShadow />
+      </group>
+      
+      <group position={[10, 5, -14.4]}>
+        <mesh>
+          <boxGeometry args={[0.5, 1, 0.2]} />
+          <meshBasicMaterial color="#C9A15A" />
+        </mesh>
+        <pointLight intensity={2} distance={15} color="#C9A15A" castShadow />
+      </group>
+    </group>
+  );
+}
+
 function SceneRig({ loaded }: { loaded: boolean }) {
   const cameraGroupRef = useRef<THREE.Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -97,13 +163,38 @@ function SceneRig({ loaded }: { loaded: boolean }) {
       gsap.set(cameraGroupRef.current.position, { x: 0, y: 5, z: 12 });
       gsap.set(cameraGroupRef.current.rotation, { x: -0.2, y: 0, z: 0 });
 
-      // Dolly in slow
+      // Dolly in slow for Hero Load
       gsap.to(cameraGroupRef.current.position, {
         x: 0,
         y: 2,
         z: 6,
         duration: 2.5,
         ease: "power2.out",
+      });
+
+      // ScrollTrigger: Pull back for About Lounge
+      // We animate the camera group position and rotation as we scroll through the page
+      gsap.to(cameraGroupRef.current.position, {
+        y: 6,
+        z: 18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      gsap.to(cameraGroupRef.current.rotation, {
+        x: -0.15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
       });
     }
   }, [loaded]);
@@ -145,6 +236,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
         />
 
         <PoolTable />
+        <LoungeEnvironment />
         <DustMotes />
 
         <EffectComposer>
