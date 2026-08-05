@@ -2,7 +2,7 @@
 
 import React, { useRef, useLayoutEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
+import { PerspectiveCamera, MeshReflectorMaterial } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -59,7 +59,11 @@ function PoolTable() {
       {/* The Felt */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[12, 6]} />
-        <meshStandardMaterial color="#0B3D2E" roughness={0.8} />
+        <meshStandardMaterial 
+          color="#0B3D2E" 
+          roughness={0.9} 
+          metalness={0.1}
+        />
       </mesh>
       
       {/* The Cushions/Rails */}
@@ -108,35 +112,47 @@ function LoungeEnvironment() {
         <meshStandardMaterial color="#050505" roughness={0.9} />
       </mesh>
 
-      {/* Floor */}
+      {/* Floor with Reflections */}
       <mesh position={[0, -1.1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[40, 40]} />
-        <meshStandardMaterial color="#020202" roughness={0.8} />
+        <MeshReflectorMaterial
+          blur={[400, 100]}
+          resolution={1024}
+          mixBlur={1}
+          mixStrength={15}
+          roughness={0.6}
+          depthScale={1.2}
+          minDepthThreshold={0.4}
+          maxDepthThreshold={1.4}
+          color="#050505"
+          metalness={0.5}
+          mirror={0.5}
+        />
       </mesh>
 
       {/* Sofa Silhouette (Left) */}
       <mesh position={[-8, 0, -8]} receiveShadow>
         <boxGeometry args={[6, 2.5, 3]} />
-        <meshStandardMaterial color="#080504" roughness={0.7} />
+        <meshPhysicalMaterial color="#080504" roughness={0.6} clearcoat={0.3} />
       </mesh>
       
       {/* Sofa Silhouette (Right) */}
       <mesh position={[8, 0, -8]} receiveShadow>
         <boxGeometry args={[6, 2.5, 3]} />
-        <meshStandardMaterial color="#080504" roughness={0.7} />
+        <meshPhysicalMaterial color="#080504" roughness={0.6} clearcoat={0.3} />
       </mesh>
 
       {/* Cue Racks Silhouette */}
       <mesh position={[0, 3, -14.4]} receiveShadow>
         <boxGeometry args={[8, 6, 0.2]} />
-        <meshStandardMaterial color="#1a0f0a" roughness={0.8} />
+        <meshPhysicalMaterial color="#0A0604" roughness={0.4} clearcoat={0.8} />
       </mesh>
 
       {/* Wall Sconces */}
       <group position={[-10, 5, -14.4]}>
         <mesh>
           <boxGeometry args={[0.5, 1, 0.2]} />
-          <meshBasicMaterial color="#C9A15A" />
+          <meshPhysicalMaterial color="#C9A15A" metalness={1} roughness={0.2} clearcoat={1} />
         </mesh>
         <pointLight intensity={2} distance={15} color="#C9A15A" castShadow />
       </group>
@@ -144,7 +160,7 @@ function LoungeEnvironment() {
       <group position={[10, 5, -14.4]}>
         <mesh>
           <boxGeometry args={[0.5, 1, 0.2]} />
-          <meshBasicMaterial color="#C9A15A" />
+          <meshPhysicalMaterial color="#C9A15A" metalness={1} roughness={0.2} clearcoat={1} />
         </mesh>
         <pointLight intensity={2} distance={15} color="#C9A15A" castShadow />
       </group>
