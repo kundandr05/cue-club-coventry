@@ -2,6 +2,7 @@
 
 import React, { useRef, useLayoutEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { PerspectiveCamera } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -41,9 +42,7 @@ function DustMotes() {
       <bufferGeometry>
         <bufferAttribute 
           attach="attributes-position" 
-          count={particlesCount} 
-          array={positions} 
-          itemSize={3} 
+          args={[positions, 3]} 
         />
       </bufferGeometry>
       <pointsMaterial size={0.05} color="#ffffff" transparent opacity={0.3} depthWrite={false} blending={THREE.AdditiveBlending} />
@@ -122,7 +121,7 @@ function SceneRig({ loaded }: { loaded: boolean }) {
 
   return (
     <group ref={cameraGroupRef}>
-      <perspectiveCamera ref={cameraRef} makeDefault fov={45} near={0.1} far={100} />
+      <PerspectiveCamera ref={cameraRef} makeDefault fov={45} near={0.1} far={100} />
     </group>
   );
 }
@@ -148,7 +147,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
         <PoolTable />
         <DustMotes />
 
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom luminanceThreshold={0.5} mipmapBlur intensity={1.5} />
           <Vignette eskil={false} offset={0.1} darkness={1.1} />
         </EffectComposer>
