@@ -17,14 +17,14 @@ export const LoungeArea = forwardRef<THREE.Group, React.ComponentProps<'group'>>
   // if (USE_GLTF && scene) return <primitive ref={ref} object={scene} {...props} />
   return (
     <group ref={ref} {...props}>
-      {/* Premium Bar Surface (White Marble) */}
+      {/* Premium Bar Surface (Polished Black Marble) */}
       <Box args={[12, 1.2, 3]} position={[0, 0.6, 0]} receiveShadow castShadow>
-        <meshPhysicalMaterial color="#ffffff" metalness={0.1} roughness={0.1} clearcoat={1} clearcoatRoughness={0.1} />
+        <meshPhysicalMaterial color="#050505" metalness={0.8} roughness={0.05} clearcoat={1} clearcoatRoughness={0.1} />
       </Box>
       
-      {/* Bar Base / Paneling (White/Cream Wood) */}
+      {/* Bar Base / Paneling (Dark Wood) */}
       <Box args={[11.8, 4, 2.8]} position={[0, -2, 0]} receiveShadow castShadow>
-        <meshPhysicalMaterial color="#f5f5f5" metalness={0.1} roughness={0.4} clearcoat={0.2} />
+        <meshPhysicalMaterial color="#1a0f0a" metalness={0.2} roughness={0.8} clearcoat={0.5} />
       </Box>
 
       {/* Gold Trim on Bar */}
@@ -45,7 +45,7 @@ export const LoungeArea = forwardRef<THREE.Group, React.ComponentProps<'group'>>
       {/* Cue Rack */}
       <group position={[-5, 2, -1.2]}>
         <Box args={[0.2, 8, 0.5]} position={[0, 0, 0]} castShadow>
-          <meshPhysicalMaterial color="#e8e8e8" metalness={0.1} roughness={0.5} />
+          <meshPhysicalMaterial color="#1a0f0a" metalness={0.2} roughness={0.8} />
         </Box>
         {/* Realistic Cues */}
         {[0, 1, 2, 3].map((i) => (
@@ -63,10 +63,10 @@ export const LoungeArea = forwardRef<THREE.Group, React.ComponentProps<'group'>>
       {/* Trophy Shelf / Display */}
       <group position={[4, 3, -1]}>
         <Box args={[4, 0.2, 1]} position={[0, 0, 0]} castShadow>
-          <meshPhysicalMaterial color="#ffffff" metalness={0.2} roughness={0.1} clearcoat={1} />
+          <meshPhysicalMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} clearcoat={1} />
         </Box>
         <Box args={[4, 0.2, 1]} position={[0, 2, 0]} castShadow>
-          <meshPhysicalMaterial color="#ffffff" metalness={0.2} roughness={0.1} clearcoat={1} />
+          <meshPhysicalMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} clearcoat={1} />
         </Box>
         {/* Shiny Brass Trophy */}
         <Cylinder args={[0.2, 0.1, 0.8, 64]} position={[0, 0.5, 0]} castShadow>
@@ -77,13 +77,13 @@ export const LoungeArea = forwardRef<THREE.Group, React.ComponentProps<'group'>>
         </Sphere>
       </group>
 
-      {/* Premium Leather Seating (White Cream Leather) */}
+      {/* Premium Leather Seating (Deep Buttoned Look) */}
       <group position={[0, -2, 4]}>
         <Box args={[8, 1, 3]} position={[0, 0.5, 0]} castShadow receiveShadow>
-          <meshPhysicalMaterial color="#fdfbf7" metalness={0.1} roughness={0.5} clearcoat={0.1} />
+          <meshPhysicalMaterial color="#1a110a" metalness={0.2} roughness={0.7} clearcoat={0.1} />
         </Box>
         <Box args={[8, 2, 1]} position={[0, 1.5, -1]} castShadow receiveShadow>
-          <meshPhysicalMaterial color="#fdfbf7" metalness={0.1} roughness={0.5} clearcoat={0.1} />
+          <meshPhysicalMaterial color="#1a110a" metalness={0.2} roughness={0.7} clearcoat={0.1} />
         </Box>
       </group>
     </group>

@@ -24,18 +24,17 @@ export function ClubFloor({
       <group position={position} rotation={rotation}>
         <mesh receiveShadow>
           <planeGeometry args={size} />
-          {/* Pristine White Carrara Marble */}
           <MeshReflectorMaterial
-            blur={[300, 100]}
-            resolution={1024}
-            mixBlur={1}
-            mixStrength={80}
-            roughness={0.05} // Highly polished
-            depthScale={1.2}
+            blur={[500, 150]} 
+            resolution={1024} // High-res for premium feeling
+            mixBlur={1.5} 
+            mixStrength={60} // Very strong reflections
+            roughness={0.15} // More polished
+            depthScale={1.5} 
             minDepthThreshold={0.4}
             maxDepthThreshold={1.4}
-            color="#f0f0f0" // Bright white base
-            metalness={0.1}
+            color="#020202" // Deeper black
+            metalness={0.8} // More metallic/glass-like
             mirror={1}
           />
         </mesh>
