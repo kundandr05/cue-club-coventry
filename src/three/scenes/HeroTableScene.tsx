@@ -196,6 +196,30 @@ function SceneRig({ loaded }: { loaded: boolean }) {
           scrub: true,
         }
       });
+
+      // ScrollTrigger: Top-Down view for Booking
+      gsap.to(cameraGroupRef.current.position, {
+        y: 12,
+        z: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      gsap.to(cameraGroupRef.current.rotation, {
+        x: -Math.PI / 2,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#about-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
     }
   }, [loaded]);
 

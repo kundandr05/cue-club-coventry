@@ -20,8 +20,42 @@ const fontMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Cue Club Coventry | Pool, Snooker, Darts & Poker Members Club",
-  description: "Coventry's home for pool, snooker, darts & poker. Premium snooker tables, professional pool slates, and a luxurious lounge atmosphere.",
+  title: {
+    default: "The Cue Club Coventry | Premium Pool & Snooker",
+    template: "%s | The Cue Club Coventry"
+  },
+  description: "Coventry's finest members club for pool, snooker, darts & poker. Experience a luxurious lounge atmosphere, professional pool slates, and a heritage of precision.",
+  keywords: ["Cue Club", "Coventry", "Snooker", "Pool", "Billiards", "Darts", "Poker", "Members Club", "Sports Bar"],
+  authors: [{ name: "The Cue Club Coventry" }],
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://cueclubcoventry.com",
+    title: "The Cue Club Coventry",
+    description: "Coventry's finest members club for pool, snooker, darts & poker.",
+    siteName: "The Cue Club Coventry",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Cue Club Coventry",
+    description: "Coventry's finest members club for pool, snooker, darts & poker.",
+  }
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "name": "The Cue Club Coventry",
+  "description": "Coventry's finest members club for pool, snooker, darts & poker. Experience a luxurious lounge atmosphere.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Precision Way",
+    "addressLocality": "Coventry",
+    "postalCode": "CV1 2AB",
+    "addressCountry": "UK"
+  },
+  "telephone": "+442412345678",
+  "openingHours": "Mo-Su 12:00-02:00"
 };
 
 export default function RootLayout({
@@ -34,6 +68,10 @@ export default function RootLayout({
       <body
         className={`${fontBody.variable} ${fontDisplay.variable} ${fontMono.variable} antialiased bg-ink text-porcelain`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <LenisProvider>
           {children}
         </LenisProvider>
