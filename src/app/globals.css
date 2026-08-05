@@ -1,17 +1,42 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ink: #0A0A0A;
+  --color-felt: #0B3D2E;
+  --color-felt-bright: #1B6E4C;
+  --color-brass: #C9A15A;
+  --color-porcelain: #F5F3EE;
+  --color-smoke: #8C8C88;
+  --color-glow-green: rgba(27, 110, 76, 0.35);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
 :root {
-  background-color: #ffffff;
-  color: #000000;
-  color-scheme: light;
+  background-color: var(--color-ink);
+  color: var(--color-porcelain);
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--color-ink);
+  color: var(--color-porcelain);
+  font-family: var(--font-body), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace;
 }
 
 /* Utilities for Lenis */
@@ -29,4 +54,17 @@ html.lenis, html.lenis body {
 }
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Glass Card Utilities */
+.glass-card {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.2s ease-out;
+}
+.glass-card:hover {
+  border-color: rgba(201, 161, 90, 0.4);
+  box-shadow: 0 0 20px var(--color-glow-green);
 }
