@@ -8,6 +8,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { MembershipModal } from "@/components/ui/MembershipModal";
 import { Gallery } from "@/components/sections/Gallery";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASINGS, DURATIONS } from "@/utils/easings";
@@ -283,6 +284,7 @@ function MobileBg({ loaded }: { loaded: boolean }) {
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [membershipOpen, setMembershipOpen] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const soundFired = useRef(false);
   const reducedMotion = useReducedMotion();
@@ -414,6 +416,9 @@ export default function Home() {
       {loaded && <FloatingCTA />}
       {loaded && <WhatsAppButton />}
 
+      {/* Membership Modal */}
+      <MembershipModal isOpen={membershipOpen} onClose={() => setMembershipOpen(false)} />
+
       {/* Navbar */}
       <div id="navbar-el" style={{ opacity: 0 }}>
         <Navbar visible={loaded} />
@@ -540,10 +545,13 @@ export default function Home() {
               ))}
             </div>
 
-            <Link href="/booking"
-              className="block w-full text-center border-2 border-brass bg-brass text-ink font-display text-xs uppercase tracking-[0.2em] py-3.5 rounded-xl hover:bg-brass/90 transition-all duration-300">
+            <button
+              type="button"
+              onClick={() => setMembershipOpen(true)}
+              className="block w-full text-center border-2 border-brass bg-brass text-ink font-display text-xs uppercase tracking-[0.2em] py-3.5 rounded-xl hover:bg-brass/90 transition-all duration-300 cursor-pointer"
+            >
               Apply for Membership
-            </Link>
+            </button>
           </div>
         </section>
 
