@@ -3,50 +3,123 @@
 import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera, MeshReflectorMaterial, Float, Environment } from "@react-three/drei";
-import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Vector2 } from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─────────────────────────────────────────────
-// POOL BALLS
-// ─────────────────────────────────────────────
+// 15 BALL COLORS
 const BALL_COLORS = [
-  "#F5F3EE", // cue ball
-  "#F5C518", // 1 - yellow
-  "#1565C0", // 2 - blue
-  "#B71C1C", // 3 - red
-  "#6A1B9A", // 4 - purple
-  "#E65100", // 5 - orange
-  "#1B5E20", // 6 - green
-  "#880E4F", // 7 - maroon
-  "#0A0A0A", // 8 - black
+  "#F5F3EE", // 0: Cue ball
+  "#F5C518", // 1: Yellow
+  "#1565C0", // 2: Blue
+  "#B71C1C", // 3: Red
+  "#6A1B9A", // 4: Purple
+  "#E65100", // 5: Orange
+  "#1B5E20", // 6: Green
+  "#880E4F", // 7: Maroon
+  "#0A0A0A", // 8: 8-Ball
+  "#F5C518", // 9: Yellow stripe
+  "#1565C0", // 10: Blue stripe
+  "#B71C1C", // 11: Red stripe
+  "#6A1B9A", // 12: Purple stripe
+  "#E65100", // 13: Orange stripe
+  "#1B5E20", // 14: Green stripe
+  "#880E4F", // 15: Maroon stripe
 ];
 
-function PoolBalls({ isMobile }: { isMobile: boolean }) {
-  const positions: [number, number, number][] = [
-    [-1.5, -0.85, 0],
-    [0, -0.85, -0.5],   [0, -0.85, 0.5],
-    [1.5, -0.85, -1],   [1.5, -0.85, 0],   [1.5, -0.85, 1],
-    [3, -0.85, -1.5],   [3, -0.85, -0.5],  [3, -0.85, 0.5],
-  ];
+// TRIANGLE RACK POSITIONS (Before Splash)
+const RACK_POSITIONS: [number, number, number][] = [
+  [0, -0.85, 2.5],      // Cue ball
+  [0, -0.85, -0.7],     // Row 1 (Apex)
+  [-0.16, -0.85, -1.0], [0.16, -0.85, -1.0], // Row 2
+  [-0.32, -0.85, -1.3], [0, -0.85, -1.3], [0.32, -0.85, -1.3], // Row 3
+  [-0.48, -0.85, -1.6], [-0.16, -0.85, -1.6], [0.16, -0.85, -1.6], [0.48, -0.85, -1.6], // Row 4
+  [-0.64, -0.85, -1.9], [-0.32, -0.85, -1.9], [0, -0.85, -1.9], [0.32, -0.85, -1.9], [0.64, -0.85, -1.9] // Row 5
+];
+
+// SPLASH OUTWARD TARGET POSITIONS (After Break)
+const SPLASH_TARGETS: [number, number, number][] = [
+  [0.05, -0.85, -0.55], // Cue ball (stops near center)
+  [0.1, -0.85, -2.4],   // Apex ball
+  [-2.2, -0.85, 0.4],   [2.4, -0.85, 0.2],
+  [-3.8, -0.85, -1.2],  [0.4, -0.85, 1.2],   [3.6, -0.85, -1.0],
+  [-1.8, -0.85, -2.2],  [-3.2, -0.85, 1.5],  [2.8, -0.85, 1.6],   [1.9, -0.85, -2.3],
+  [-4.2, -0.85, -0.2],  [-0.8, -0.85, 2.1],  [0.8, -0.85, 2.2],   [4.4, -0.85, -0.1], [3.9, -0.85, 2.0]
+];
+
+// ─────────────────────────────────────────────
+// POOL BALLS WITH SPLASH BREAK ANIMATION
+// ─────────────────────────────────────────────
+function PoolBalls({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
+  const ballGroupRef = useRef<THREE.Group>(null);
+  const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
+
+  useEffect(() => {
+    if (!loaded || !ballGroupRef.current) return;
+
+    const tl = gsap.timeline();
+
+    // 1. Cue Ball strikes forward (t = 1.4s after man walks in)
+    const cueMesh = meshRefs.current[0];
+    if (cueMesh) {
+      tl.to(cueMesh.position, {
+        z: SPLASH_TARGETS[0][2],
+        duration: 0.3,
+        ease: "power4.in",
+        delay: 1.4
+      });
+    }
+
+    // 2. The SPLASH! All 15 balls explode outward from the triangle rack
+    meshRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      const target = SPLASH_TARGETS[i];
+
+      tl.to(
+        mesh.position,
+        {
+          x: target[0],
+          z: target[2],
+          duration: 1.2,
+          ease: "power3.out",
+        },
+        1.65 // Triggers right as cue ball hits apex
+      );
+
+      // Add rotation to simulate rolling
+      tl.to(
+        mesh.rotation,
+        {
+          x: (Math.random() - 0.5) * Math.PI * 4,
+          z: (Math.random() - 0.5) * Math.PI * 4,
+          duration: 1.2,
+          ease: "power3.out",
+        },
+        1.65
+      );
+    });
+
+  }, [loaded]);
 
   return (
-    <group>
-      {positions.map((pos, i) => (
-        <Float key={i} speed={isMobile ? 0 : 0.5 + i * 0.1} rotationIntensity={0.2} floatIntensity={0.05}>
-          <mesh position={pos} castShadow={!isMobile}>
-            <sphereGeometry args={[0.14, isMobile ? 16 : 32, isMobile ? 16 : 32]} />
-            <meshStandardMaterial
-              color={BALL_COLORS[i]}
-              roughness={0.1}
-              metalness={0.1}
-            />
-          </mesh>
-        </Float>
+    <group ref={ballGroupRef}>
+      {RACK_POSITIONS.map((pos, i) => (
+        <mesh
+          key={i}
+          ref={(el) => { meshRefs.current[i] = el; }}
+          position={pos}
+          castShadow={!isMobile}
+        >
+          <sphereGeometry args={[0.14, isMobile ? 16 : 32, isMobile ? 16 : 32]} />
+          <meshStandardMaterial
+            color={BALL_COLORS[i % BALL_COLORS.length]}
+            roughness={0.08}
+            metalness={0.1}
+          />
+        </mesh>
       ))}
     </group>
   );
@@ -371,7 +444,7 @@ function FooterLightRig({ loaded, isMobile }: { loaded: boolean; isMobile: boole
 }
 
 // ─────────────────────────────────────────────
-// SCENE RIG — Camera Controller
+// SCENE RIG — ENTRANCE WALK-IN + TRIANGLE BREAK CAMERA RIG
 // ─────────────────────────────────────────────
 function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -380,18 +453,48 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
   useLayoutEffect(() => {
     if (!loaded || !groupRef.current) return;
 
-    const initialZ = isMobile ? 12 : 9;
-    const initialY = isMobile ? 3.2 : 2.5;
+    const heroZ = isMobile ? 12 : 9;
+    const heroY = isMobile ? 3.2 : 2.5;
 
-    gsap.set(groupRef.current.position, { y: 8, z: 18 });
-    gsap.set(groupRef.current.rotation, { x: -0.3 });
+    // STEP 1: Entrance Start Position — Man standing near entrance doorway looking down club aisle
+    gsap.set(groupRef.current.position, { x: 0, y: 3.5, z: 24 });
+    gsap.set(groupRef.current.rotation, { x: -0.15, y: 0, z: 0 });
     camera.position.set(0, 0, 0);
     camera.rotation.set(0, 0, 0);
 
-    // Hero: cinematic dolly-in
-    gsap.to(groupRef.current.position, { y: initialY, z: initialZ, duration: 2.5, ease: "power2.out" });
-    gsap.to(groupRef.current.rotation, { x: -0.12, duration: 2.5, ease: "power2.out" });
+    const tl = gsap.timeline();
 
+    // STEP 2: Man walks forward down the aisle into the room towards the racked table
+    tl.to(groupRef.current.position, {
+      y: 1.8,
+      z: 4.5,
+      duration: 1.4,
+      ease: "power2.inOut",
+    });
+
+    tl.to(groupRef.current.rotation, {
+      x: -0.25, // Tilted down to focus on the 15-ball triangle rack
+      duration: 1.4,
+      ease: "power2.inOut",
+    }, 0);
+
+    // STEP 3: Cue ball hits, 15 balls SPLASH! Camera lifts & dollies into Hero Position as website opens!
+    tl.to(groupRef.current.position, {
+      y: heroY,
+      z: heroZ,
+      duration: 1.2,
+      ease: "power3.out",
+    }, 1.75);
+
+    tl.to(groupRef.current.rotation, {
+      x: -0.12,
+      duration: 1.2,
+      ease: "power3.out",
+    }, 1.75);
+
+    // ─────────────────────────────────────────────
+    // SCROLL-TRIGGERED CAMERA MOVEMENTS (After Opening)
+    // ─────────────────────────────────────────────
     // About: pull back to reveal lounge
     gsap.to(groupRef.current.position, {
       y: isMobile ? 7 : 6, z: isMobile ? 24 : 20,
@@ -484,7 +587,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
 
         <OverheadLamp isMobile={isMobile} />
         <PoolTable isMobile={isMobile} />
-        <PoolBalls isMobile={isMobile} />
+        <PoolBalls loaded={loaded} isMobile={isMobile} />
         <DustMotes isMobile={isMobile} />
         <LoungeEnvironment isMobile={isMobile} />
 
