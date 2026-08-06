@@ -46,6 +46,27 @@ export function MembershipModal({ isOpen, onClose }: MembershipModalProps) {
       // ignore
     }
 
+    // Save to localStorage history so it appears in /booking/history
+    try {
+      const stored = localStorage.getItem("cue_club_bookings");
+      const existing = stored ? JSON.parse(stored) : [];
+      const historyRecord = {
+        bookingRef: generatedId,
+        tableType: tier === "premier" ? "Premier Membership Tier" : "Standard Membership Tier",
+        date: new Date().toISOString().split("T")[0],
+        time: "Active Membership Pass",
+        guests: 1,
+        name,
+        email,
+        phone,
+        submittedAt: new Date().toISOString(),
+        isMembership: true,
+      };
+      localStorage.setItem("cue_club_bookings", JSON.stringify([historyRecord, ...existing]));
+    } catch {
+      // ignore
+    }
+
     setMemberId(generatedId);
     setStatus("success");
   };

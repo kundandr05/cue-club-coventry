@@ -119,17 +119,17 @@ export default function BookingHistoryPage() {
                       #{item.bookingRef}
                     </span>
                     <span className="font-mono text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                      Confirmed
+                      {(item as unknown as { isMembership?: boolean }).isMembership ? "Membership Active" : "Booking Confirmed"}
                     </span>
                   </div>
                   <div className="font-display text-base text-porcelain uppercase">
-                    {item.tableType === "pool" ? "Professional Pool Slate" : "Full-Size Snooker"}
+                    {item.tableType}
                   </div>
                   <div className="font-mono text-xs text-smoke mt-1">
-                    📅 {item.date} at {item.time} • 👥 {item.guests} {item.guests === 1 ? "Guest" : "Guests"}
+                    📅 {item.date} • {item.time} {(item as unknown as { isMembership?: boolean }).isMembership ? "" : `• 👥 ${item.guests} Guests`}
                   </div>
                   <div className="font-mono text-[10px] text-smoke/50 mt-1">
-                    Name: {item.name} ({item.email})
+                    Holder: {item.name} ({item.email})
                   </div>
                 </div>
 
