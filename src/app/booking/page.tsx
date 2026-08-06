@@ -56,6 +56,15 @@ export default function BookingPage() {
       // ignore
     }
 
+    // Save to localStorage history
+    try {
+      const stored = localStorage.getItem("cue_club_bookings");
+      const existing = stored ? JSON.parse(stored) : [];
+      localStorage.setItem("cue_club_bookings", JSON.stringify([payload, ...existing]));
+    } catch {
+      // ignore
+    }
+
     setRefCode(bookingRef);
     setStatus("confirmed");
   };
@@ -73,9 +82,17 @@ export default function BookingPage() {
           </svg>
           <span>Back to Main Club</span>
         </Link>
-        <span className="font-display text-brass text-xs tracking-[0.3em] uppercase">
-          The Cue Club
-        </span>
+        <div className="flex items-center space-x-6">
+          <Link
+            href="/booking/history"
+            className="font-mono text-xs text-smoke hover:text-brass transition-colors uppercase tracking-wider hidden sm:inline"
+          >
+            My Reservations →
+          </Link>
+          <span className="font-display text-brass text-xs tracking-[0.3em] uppercase">
+            The Cue Club
+          </span>
+        </div>
       </div>
 
       {/* Main Container */}
