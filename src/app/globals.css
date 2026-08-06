@@ -74,3 +74,76 @@ html.lenis, html.lenis body {
   border-color: rgba(201, 161, 90, 0.4);
   box-shadow: 0 0 20px var(--color-glow-green);
 }
+
+/* ─────────────────────────────────────────────
+   SPOTLIGHT SWEEP — Hero title light reveal
+───────────────────────────────────────────── */
+@keyframes spotlight-sweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 300% center;
+  }
+}
+
+.spotlight-sweep {
+  position: relative;
+}
+.spotlight-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 245, 224, 0.18) 48%,
+    rgba(201, 161, 90, 0.22) 52%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: spotlight-sweep 1.6s ease-in-out forwards;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ─────────────────────────────────────────────
+   ROLLING BALL — CTA button hover animation
+───────────────────────────────────────────── */
+@keyframes ball-roll {
+  0%   { transform: translateX(-4px) rotate(0deg);   opacity: 0.7; }
+  50%  { transform: translateX(0px) rotate(180deg);  opacity: 1;   }
+  100% { transform: translateX(4px) rotate(360deg);  opacity: 0.7; }
+}
+
+.rolling-btn .ball-roll {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.rolling-btn:hover .ball-roll {
+  animation: ball-roll 0.6s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────
+   CHALK DUST — Subtle radial pulse on break
+───────────────────────────────────────────── */
+@keyframes chalk-burst {
+  0%   { opacity: 0; transform: scale(0.5); }
+  30%  { opacity: 0.7; }
+  100% { opacity: 0; transform: scale(2.5); }
+}
+
+.chalk-dust {
+  animation: chalk-burst 1.2s ease-out forwards;
+  pointer-events: none;
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(220,230,255,0.4) 0%, transparent 70%);
+}
+
+/* ─────────────────────────────────────────────
+   GALLERY — Shimmer on image load
+───────────────────────────────────────────── */
+.gallery-item img {
+  will-change: transform;
+}

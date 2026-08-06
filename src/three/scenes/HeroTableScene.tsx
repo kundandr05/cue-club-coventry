@@ -126,6 +126,93 @@ function PoolBalls({ loaded, isMobile }: { loaded: boolean; isMobile: boolean })
 }
 
 // ─────────────────────────────────────────────
+// CHALK DUST PARTICLES — Burst on break
+// ─────────────────────────────────────────────
+const PARTICLE_COUNT = 80;
+
+function makePositions(): Float32Array {
+  const arr = new Float32Array(PARTICLE_COUNT * 3);
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const r = Math.random() * 0.4;
+    arr[i * 3]     = Math.cos(angle) * r;
+    arr[i * 3 + 1] = -0.85;
+    arr[i * 3 + 2] = Math.sin(angle) * r - 0.7;
+  }
+  return arr;
+}
+
+function makeVelocities(): Float32Array {
+  const arr = new Float32Array(PARTICLE_COUNT * 3);
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.5 + Math.random() * 2.5;
+    arr[i * 3]     = Math.cos(angle) * speed * 0.04;
+    arr[i * 3 + 1] = 0.02 + Math.random() * 0.05;
+    arr[i * 3 + 2] = Math.sin(angle) * speed * 0.04;
+  }
+  return arr;
+}
+
+function ChalkDust({ loaded }: { loaded: boolean }) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const geoRef    = useRef<THREE.BufferGeometry>(null);
+  const startTime = useRef<number | null>(null);
+  const pos       = useRef<Float32Array>(makePositions());
+  const vel       = useRef<Float32Array>(makeVelocities());
+
+  useFrame((_, delta) => {
+    if (!loaded || !pointsRef.current || !geoRef.current) return;
+    if (startTime.current === null) return;
+
+    const elapsed = (Date.now() - startTime.current) / 1000;
+    if (elapsed > 1.5) { pointsRef.current.visible = false; return; }
+
+    const opacity = Math.max(0, 1 - elapsed / 1.2);
+    (pointsRef.current.material as THREE.PointsMaterial).opacity = opacity;
+
+    const p = pos.current;
+    const v = vel.current;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      p[i * 3]     += v[i * 3]     * delta * 18;
+      p[i * 3 + 1] += v[i * 3 + 1] * delta * 18;
+      p[i * 3 + 2] += v[i * 3 + 2] * delta * 18;
+      v[i * 3 + 1] -= 0.0015;
+    }
+    geoRef.current.attributes.position.needsUpdate = true;
+  });
+
+  useEffect(() => {
+    if (!loaded) return;
+    const t = setTimeout(() => {
+      startTime.current = Date.now();
+      if (pointsRef.current) pointsRef.current.visible = true;
+    }, 1700);
+    return () => clearTimeout(t);
+  }, [loaded]);
+
+  return (
+    <points ref={pointsRef} visible={false}>
+      <bufferGeometry ref={geoRef}>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[pos.current, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.06}
+        color="#d8e8ff"
+        transparent
+        opacity={1}
+        depthWrite={false}
+        sizeAttenuation
+      />
+    </points>
+  );
+}
+
+
+// ─────────────────────────────────────────────
 // POOL TABLE
 // ─────────────────────────────────────────────
 function PoolTable({ isMobile }: { isMobile: boolean }) {
@@ -564,6 +651,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
         <OverheadLamp isMobile={isMobile} />
         <PoolTable isMobile={isMobile} />
         <PoolBalls loaded={loaded} isMobile={isMobile} />
+        {!isMobile && <ChalkDust loaded={loaded} />}
         <DustMotes isMobile={isMobile} />
         <LoungeEnvironment isMobile={isMobile} />
 

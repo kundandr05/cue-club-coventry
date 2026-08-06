@@ -6,6 +6,8 @@ import { Loader } from "@/components/layout/Loader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FloatingCTA } from "@/components/ui/FloatingCTA";
+import { SoundToggle } from "@/components/ui/SoundToggle";
+import { Gallery } from "@/components/sections/Gallery";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -152,6 +154,7 @@ function BookingForm() {
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [strikeTriggered, setStrikeTriggered] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   // Check mobile device on mount
@@ -170,9 +173,17 @@ export default function Home() {
     gsap.fromTo(words,
       { y: 80, opacity: 0, rotateX: 60 },
       { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1, ease: "power4.out",
-        delay: 3.2, // walk-in 1.4s + cue strike 0.3s + splash 1.2s + buffer 0.3s
+        delay: 3.2,
         transformOrigin: "bottom center" }
     );
+
+    // Trigger sound at cue strike moment (t = 1.4s)
+    setTimeout(() => setStrikeTriggered(true), 1400);
+
+    // Add spotlight sweep class to title after text appears
+    setTimeout(() => {
+      if (titleRef.current) titleRef.current.classList.add("spotlight-sweep");
+    }, 4000);
 
     gsap.fromTo("#navbar-el", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: 3.0 });
     gsap.fromTo("#scroll-hint", { opacity: 0 }, { opacity: 0.6, duration: 1, delay: 4.0 });
@@ -217,6 +228,9 @@ export default function Home() {
       {/* Loader sits on top as a DOM overlay (z-50) */}
       <Loader onLoaded={() => setLoaded(true)} />
 
+      {/* Sound toggle — appears 2s after load */}
+      <SoundToggle playStrike={strikeTriggered} />
+
       {/* Custom Cursor & Scroll Progress (Desktop only) */}
       {loaded && !isMobile && <CustomCursor />}
       {loaded && !isMobile && <ScrollProgress />}
@@ -246,7 +260,21 @@ export default function Home() {
             <span className="word inline-block opacity-0">Club.</span>
           </h1>
 
-          <div id="scroll-hint" className="mt-8 flex items-center space-x-4 opacity-0">
+          {/* Rolling ball CTA */}
+          <div className="mt-8 flex flex-col sm:flex-row items-start gap-4 pointer-events-auto">
+            <a href="#booking-section"
+              className="rolling-btn group relative overflow-hidden inline-flex items-center gap-3 bg-brass text-ink font-display text-xs uppercase tracking-[0.2em] px-7 py-4 rounded-xl hover:bg-brass/90 transition-all duration-300">
+              <span className="ball-roll">🎱</span>
+              <span>Book a Table</span>
+            </a>
+            <a href="#about-section"
+              className="inline-flex items-center gap-3 border border-white/20 hover:border-brass/60 text-smoke hover:text-porcelain font-mono text-[10px] uppercase tracking-[0.2em] px-7 py-4 rounded-xl transition-all duration-300 backdrop-blur-sm bg-black/30">
+              <span>Discover the Club</span>
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" /></svg>
+            </a>
+          </div>
+
+          <div id="scroll-hint" className="mt-6 flex items-center space-x-4 opacity-0">
             <div className="w-8 h-[1px] bg-brass" />
             <span className="font-mono text-[10px] text-smoke tracking-[0.3em] uppercase">Scroll to enter</span>
           </div>
@@ -284,6 +312,9 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* ══ GALLERY ══ */}
+        <Gallery />
 
         {/* ══ BOOKING ══ */}
         <section id="booking-section" className="relative w-full min-h-screen flex items-center justify-center md:justify-end px-6 md:px-20 py-24 pointer-events-auto">
