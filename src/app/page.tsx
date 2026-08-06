@@ -45,7 +45,11 @@ function Navbar({ visible }: { visible: boolean }) {
     setMobileOpen(false);
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
     }
   };
 
