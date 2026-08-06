@@ -6,7 +6,6 @@ import { Loader } from "@/components/layout/Loader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FloatingCTA } from "@/components/ui/FloatingCTA";
-import { SoundToggle } from "@/components/ui/SoundToggle";
 import { Gallery } from "@/components/sections/Gallery";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -150,101 +149,93 @@ function BookingForm() {
 
 // ─────────────────────────────────────────────
 // MOBILE BACKGROUND — Pure CSS, zero WebGL lag
-// Animated felt-green atmospheric scene
 // ─────────────────────────────────────────────
+const MOBILE_BALLS = [
+  { top: "47%", left: "28%",  color: "#F5C518", highlight: "#FFF176", number: "1",  size: 28 },
+  { top: "53%", left: "58%",  color: "#B71C1C", highlight: "#EF9A9A", number: "3",  size: 26 },
+  { top: "44%", left: "48%",  color: "#0A0A0A", highlight: "#616161", number: "8",  size: 30 },
+  { top: "50%", left: "38%",  color: "#1565C0", highlight: "#90CAF9", number: "2",  size: 26 },
+  { top: "57%", left: "44%",  color: "#6A1B9A", highlight: "#CE93D8", number: "4",  size: 24 },
+  { top: "43%", left: "62%",  color: "#1B5E20", highlight: "#A5D6A7", number: "6",  size: 26 },
+  { top: "56%", left: "68%",  color: "#E65100", highlight: "#FFCC80", number: "5",  size: 24 },
+  { top: "41%", left: "35%",  color: "#F5F3EE", highlight: "#FFFFFF", number: "",  size: 22 },
+];
+
 function MobileBg({ loaded }: { loaded: boolean }) {
   return (
-    <div
-      className="absolute inset-0 overflow-hidden"
-      style={{ background: "#060e09" }}
-    >
-      {/* Felt table glow — centred radial */}
-      <div
-        className="absolute"
-        style={{
-          inset: 0,
-          background:
-            "radial-gradient(ellipse 120% 55% at 50% 60%, rgba(11,61,46,0.85) 0%, rgba(6,14,9,0) 70%)",
-          animation: loaded ? "mobileFeltPulse 4s ease-in-out infinite" : "none",
-        }}
-      />
+    <div className="absolute inset-0 overflow-hidden" style={{ background: "#060e09" }}>
 
-      {/* Overhead spotlight */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2"
-        style={{
-          top: "10%",
-          width: "2px",
-          height: "40%",
-          background: "linear-gradient(to bottom, rgba(201,161,90,0.5), transparent)",
-          filter: "blur(8px)",
-        }}
-      />
-      <div
-        className="absolute left-1/2 -translate-x-1/2"
-        style={{
-          top: "10%",
-          width: "220px",
-          height: "220px",
+      {/* Felt table glow */}
+      <div className="absolute" style={{
+        inset: 0,
+        background: "radial-gradient(ellipse 120% 55% at 50% 60%, rgba(11,61,46,0.85) 0%, rgba(6,14,9,0) 70%)",
+        animation: loaded ? "mobileFeltPulse 4s ease-in-out infinite" : "none",
+      }} />
+
+      {/* Overhead spotlight beam */}
+      <div className="absolute left-1/2" style={{
+        top: "8%", width: "2px", height: "38%",
+        background: "linear-gradient(to bottom, rgba(201,161,90,0.6), transparent)",
+        filter: "blur(6px)", transform: "translateX(-50%)",
+      }} />
+      <div className="absolute left-1/2" style={{
+        top: "8%", width: "240px", height: "240px", borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(201,161,90,0.14) 0%, transparent 70%)",
+        filter: "blur(22px)", transform: "translateX(-50%)",
+      }} />
+
+      {/* Pool table surface */}
+      <div className="absolute left-1/2" style={{
+        top: "40%", width: "90vw", maxWidth: "400px", height: "170px",
+        background: "rgba(11,61,46,0.6)",
+        border: "1px solid rgba(201,161,90,0.2)",
+        borderRadius: "6px",
+        boxShadow: "0 0 40px rgba(11,61,46,0.6), 0 0 80px rgba(11,61,46,0.3)",
+        transform: "translateX(-50%)",
+        animation: loaded ? "mobileTableGlow 3s ease-in-out infinite" : "none",
+      }}>
+        {/* Rails */}
+        <div style={{ position:"absolute", inset:0, border:"8px solid rgba(8,30,18,0.8)", borderRadius:"6px" }} />
+        {/* Centre spot */}
+        <div style={{ position:"absolute", left:"50%", top:"50%", width:6, height:6,
+          borderRadius:"50%", background:"rgba(201,161,90,0.4)", transform:"translate(-50%,-50%)" }} />
+      </div>
+
+      {/* 3D Billiard balls */}
+      {MOBILE_BALLS.map((b, i) => (
+        <div key={i} className="absolute" style={{
+          top: b.top, left: b.left,
+          width: b.size, height: b.size,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(201,161,90,0.12) 0%, transparent 70%)",
-          transform: "translateX(-50%)",
-          filter: "blur(20px)",
-        }}
-      />
-
-      {/* Pool table surface silhouette */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2"
-        style={{
-          top: "40%",
-          width: "90vw",
-          maxWidth: "380px",
-          height: "160px",
-          background: "rgba(11,61,46,0.55)",
-          border: "1px solid rgba(201,161,90,0.15)",
-          borderRadius: "6px",
-          boxShadow: "0 0 40px rgba(11,61,46,0.6), 0 0 80px rgba(11,61,46,0.3)",
-          animation: loaded ? "mobileTableGlow 3s ease-in-out infinite" : "none",
-        }}
-      />
-
-      {/* Scattered ball dots */}
-      {[
-        { top: "44%", left: "30%", color: "#F5C518", size: 10 },
-        { top: "52%", left: "60%", color: "#B71C1C", size: 10 },
-        { top: "48%", left: "50%", color: "#0A0A0A", size: 12 },
-        { top: "46%", left: "40%", color: "#1565C0", size: 9 },
-        { top: "55%", left: "45%", color: "#6A1B9A", size: 9 },
-        { top: "43%", left: "55%", color: "#1B5E20", size: 10 },
-      ].map((b, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            top: b.top,
-            left: b.left,
-            width: b.size,
-            height: b.size,
-            background: b.color,
-            boxShadow: `0 0 6px ${b.color}88`,
-            animation: loaded
-              ? `mobileBallFloat ${2.5 + i * 0.3}s ease-in-out ${i * 0.2}s infinite`
-              : "none",
-            opacity: loaded ? 1 : 0,
-            transition: "opacity 0.5s ease",
-          }}
-        />
+          // 3D sphere effect via radial gradient
+          background: `radial-gradient(circle at 35% 32%, ${b.highlight} 0%, ${b.color} 52%, rgba(0,0,0,0.6) 100%)`,
+          boxShadow: `0 4px 12px rgba(0,0,0,0.6), inset 0 -2px 4px rgba(0,0,0,0.4), 0 0 8px ${b.color}55`,
+          animation: loaded
+            ? `mobileBallFloat ${2.4 + i * 0.25}s ease-in-out ${i * 0.18}s infinite`
+            : "none",
+          opacity: loaded ? 1 : 0,
+          transition: `opacity 0.6s ease ${i * 0.1}s`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          {/* Ball number */}
+          {b.number && (
+            <span style={{
+              fontSize: b.size * 0.38,
+              fontWeight: 700,
+              color: b.color === "#0A0A0A" ? "#ffffff" : "rgba(0,0,0,0.75)",
+              lineHeight: 1,
+              userSelect: "none",
+              fontFamily: "sans-serif",
+              textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+            }}>{b.number}</span>
+          )}
+        </div>
       ))}
 
       {/* Vignette */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.85) 100%)",
-        }}
-      />
+      <div className="absolute inset-0" style={{
+        background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 35%, rgba(0,0,0,0.88) 100%)",
+      }} />
     </div>
   );
 }
@@ -255,17 +246,56 @@ function MobileBg({ loaded }: { loaded: boolean }) {
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [strikeTriggered, setStrikeTriggered] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const soundFired = useRef(false);
 
-  // ── FIX: Always start from top on refresh ──────────────────────────────
+  // ── FIX: Always start from top on refresh ───────────────────────────
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Disable browser scroll restoration so refresh always starts at top
       history.scrollRestoration = 'manual';
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   }, []);
+
+  // ── AUTO SOUND: fires on first user touch/click (browser policy safe) ─
+  useEffect(() => {
+    if (isMobile) return; // sound on desktop only
+    const handleFirstInteraction = () => {
+      if (soundFired.current) return;
+      soundFired.current = true;
+      // Remove listener immediately
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      // Play crack sound after the 3D cue strike moment
+      const delay = loaded ? 0 : 1400;
+      setTimeout(() => {
+        try {
+          const ctx = new AudioContext();
+          const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.15), ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 3);
+          }
+          const src = ctx.createBufferSource();
+          src.buffer = buf;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.value = 800;
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(1.4, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+          src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+          src.start();
+        } catch { /* silently ignore */ }
+      }, delay);
+    };
+    window.addEventListener('click', handleFirstInteraction, { once: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, [isMobile, loaded]);
 
   // Check mobile device on mount
   useEffect(() => {
@@ -293,7 +323,6 @@ export default function Home() {
 
     // Sound + spotlight only on desktop
     if (!isMobile) {
-      setTimeout(() => setStrikeTriggered(true), 1400);
       setTimeout(() => {
         if (titleRef.current) titleRef.current.classList.add("spotlight-sweep");
       }, 5000);
@@ -338,9 +367,6 @@ export default function Home() {
 
       {/* Loader overlay (z-50) */}
       <Loader onLoaded={() => setLoaded(true)} />
-
-      {/* Sound toggle — desktop only */}
-      {!isMobile && <SoundToggle playStrike={strikeTriggered} />}
 
       {/* Custom Cursor & Scroll Progress (Desktop only) */}
       {loaded && !isMobile && <CustomCursor />}
