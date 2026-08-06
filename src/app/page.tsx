@@ -30,17 +30,26 @@ function Navbar({ visible }: { visible: boolean }) {
 
   const links = [
     { label: "About",      href: "#about-section" },
-    { label: "Booking",    href: "/booking" },
+    { label: "Booking",    href: "#booking-section" },
     { label: "Membership", href: "#membership-section" },
     { label: "Contact",    href: "#footer-section" },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-30 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
       <div className="flex justify-between items-center px-6 md:px-16 py-5 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
 
         {/* Logo */}
-        <a href="#hero-section" className="font-display text-brass text-xs tracking-[0.3em] uppercase">
+        <a href="#hero-section" onClick={(e) => handleNavClick(e, "#hero-section")} className="font-display text-brass text-xs tracking-[0.3em] uppercase cursor-pointer">
           The Cue Club
         </a>
 
@@ -48,7 +57,8 @@ function Navbar({ visible }: { visible: boolean }) {
         <div className="hidden md:flex items-center space-x-8">
           {links.map(l => (
             <a key={l.label} href={l.href}
-              className="font-mono text-[10px] text-smoke hover:text-porcelain tracking-[0.2em] uppercase transition-colors duration-300">
+              onClick={(e) => handleNavClick(e, l.href)}
+              className="font-mono text-[10px] text-smoke hover:text-porcelain tracking-[0.2em] uppercase transition-colors duration-300 cursor-pointer">
               {l.label}
             </a>
           ))}
@@ -76,8 +86,8 @@ function Navbar({ visible }: { visible: boolean }) {
         <div className="flex flex-col space-y-4 px-6">
           {links.map(l => (
             <a key={l.label} href={l.href}
-              onClick={() => setMobileOpen(false)}
-              className="font-display text-sm text-porcelain uppercase tracking-widest hover:text-brass transition-colors">
+              onClick={(e) => handleNavClick(e, l.href)}
+              className="font-display text-sm text-porcelain uppercase tracking-widest hover:text-brass transition-colors cursor-pointer">
               {l.label}
             </a>
           ))}

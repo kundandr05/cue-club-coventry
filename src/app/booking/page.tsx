@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
 
 const TIME_SLOTS = [
   "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM",
@@ -23,6 +24,17 @@ export default function BookingPage() {
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "confirmed">("idle");
   const [refCode, setRefCode] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 40, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" }
+      );
+    }
+  }, [step, status]);
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +108,7 @@ export default function BookingPage() {
       </div>
 
       {/* Main Container */}
-      <div className="max-w-2xl w-full mx-auto bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-2xl relative z-10">
+      <div ref={containerRef} className="max-w-2xl w-full mx-auto bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-2xl relative z-10 opacity-0">
         {status === "confirmed" ? (
           /* Confirmation Screen */
           <div className="text-center py-8">

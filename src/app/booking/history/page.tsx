@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
 
 interface BookingRecord {
   bookingRef: string;
@@ -16,6 +17,7 @@ interface BookingRecord {
 
 export default function BookingHistoryPage() {
   const [history, setHistory] = useState<BookingRecord[]>([]);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
@@ -25,6 +27,14 @@ export default function BookingHistoryPage() {
       }
     } catch {
       // ignore
+    }
+
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 40, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" }
+      );
     }
   }, []);
 
@@ -58,7 +68,7 @@ export default function BookingHistoryPage() {
       </div>
 
       {/* Main Container */}
-      <div className="max-w-3xl w-full mx-auto bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-2xl relative z-10">
+      <div ref={cardRef} className="max-w-3xl w-full mx-auto bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-2xl relative z-10 opacity-0">
         <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-8">
           <div>
             <span className="font-mono text-[10px] text-brass tracking-[0.3em] uppercase block mb-1">
