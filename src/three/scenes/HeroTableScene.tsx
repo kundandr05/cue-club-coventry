@@ -120,7 +120,7 @@ function PoolTable({ isMobile }: { isMobile: boolean }) {
 function LoungeEnvironment({ isMobile }: { isMobile: boolean }) {
   return (
     <group>
-      {/* Floor - Reflector on desktop, dark glossy material on mobile */}
+      {/* Floor */}
       <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow={!isMobile}>
         <planeGeometry args={[60, 60]} />
         {!isMobile ? (
@@ -294,6 +294,68 @@ function OverheadLamp({ isMobile }: { isMobile: boolean }) {
 }
 
 // ─────────────────────────────────────────────
+// FOOTER LIGHT RIG — Light-On Reveal for Contact Section
+// ─────────────────────────────────────────────
+function FooterLightRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
+  const ambientRef = useRef<THREE.AmbientLight>(null);
+  const fillLightRef = useRef<THREE.DirectionalLight>(null);
+  const spotLightRef = useRef<THREE.SpotLight>(null);
+
+  useLayoutEffect(() => {
+    if (!loaded) return;
+
+    // ScrollTrigger to ramp UP the room lighting when reaching the Footer/Contact section
+    if (ambientRef.current) {
+      gsap.to(ambientRef.current, {
+        intensity: isMobile ? 1.2 : 2.2,
+        color: "#FFD97A",
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        }
+      });
+    }
+
+    if (fillLightRef.current) {
+      gsap.to(fillLightRef.current, {
+        intensity: isMobile ? 3.0 : 6.0,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        }
+      });
+    }
+
+    if (spotLightRef.current) {
+      gsap.to(spotLightRef.current, {
+        intensity: isMobile ? 12 : 30,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        }
+      });
+    }
+  }, [loaded, isMobile]);
+
+  return (
+    <>
+      <ambientLight ref={ambientRef} intensity={0.2} color="#FFD97A" />
+      <directionalLight ref={fillLightRef} position={[0, 12, 10]} intensity={0} color="#C9A15A" />
+      <spotLight ref={spotLightRef} position={[0, 16, -5]} intensity={0} angle={1.3} penumbra={0.8} color="#FFF5E0" />
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────
 // SCENE RIG — Camera Controller
 // ─────────────────────────────────────────────
 function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
@@ -303,7 +365,6 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
   useLayoutEffect(() => {
     if (!loaded || !groupRef.current) return;
 
-    // Start position — adjusted slightly for mobile aspect ratio
     const initialZ = isMobile ? 12 : 9;
     const initialY = isMobile ? 3.2 : 2.5;
 
@@ -352,14 +413,14 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
       scrollTrigger: { trigger: "#booking-section", start: "top top", end: "bottom top", scrub: 1 }
     });
 
-    // Footer: pull back to dark
+    // Footer: Light-On Grand Reveal Camera Movement
     gsap.to(groupRef.current.position, {
-      y: 5, z: 30, x: 0,
+      y: isMobile ? 4 : 3.5, z: isMobile ? 22 : 18, x: 0,
       ease: "none",
       scrollTrigger: { trigger: "#membership-section", start: "top top", end: "bottom top", scrub: 1 }
     });
     gsap.to(groupRef.current.rotation, {
-      x: -0.08, y: 0,
+      x: -0.05, y: 0,
       ease: "none",
       scrollTrigger: { trigger: "#membership-section", start: "top top", end: "bottom top", scrub: 1 }
     });
@@ -401,10 +462,10 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
       >
         <SceneRig loaded={loaded} isMobile={isMobile} />
 
-        {/* Environment */}
+        {/* Environment & Dynamic Footer Light Rig */}
         <Environment preset="night" />
         <fog attach="fog" args={["#020202", 15, 60]} />
-        <ambientLight intensity={0.2} color="#FFD97A" />
+        <FooterLightRig loaded={loaded} isMobile={isMobile} />
 
         <OverheadLamp isMobile={isMobile} />
         <PoolTable isMobile={isMobile} />

@@ -196,6 +196,11 @@ export default function Home() {
       { opacity: 1, y: 0, scrollTrigger: { trigger: "#membership-section", start: "top 80%", end: "top 30%", scrub: 1 } }
     );
 
+    gsap.fromTo("#footer-title",
+      { opacity: 0.1, y: 40 },
+      { opacity: 0.85, y: 0, scrollTrigger: { trigger: "#footer-section", start: "top 80%", end: "top 20%", scrub: 1 } }
+    );
+
   }, [loaded]);
 
   return (
@@ -336,7 +341,7 @@ export default function Home() {
         <section id="footer-section" className="relative w-full min-h-[80vh] flex flex-col justify-end px-6 md:px-20 py-16 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-auto">
           <span className="absolute top-8 left-6 md:left-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">04 — Contact</span>
 
-          <h2 className="font-display text-[clamp(2.5rem,10vw,8rem)] text-porcelain/10 uppercase leading-none tracking-tighter select-none mb-12 overflow-hidden">
+          <h2 id="footer-title" className="font-display text-[clamp(2.5rem,10vw,8rem)] text-brass uppercase leading-none tracking-tighter select-none mb-12 overflow-hidden drop-shadow-[0_0_25px_rgba(201,161,90,0.3)]">
             Cue Club<br />Coventry
           </h2>
 
