@@ -10,6 +10,8 @@ import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { MembershipModal } from "@/components/ui/MembershipModal";
 import { Gallery } from "@/components/sections/Gallery";
+import { TablesFacilities } from "@/components/sections/TablesFacilities";
+import { EventsTournaments } from "@/components/sections/EventsTournaments";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASINGS, DURATIONS } from "@/utils/easings";
 import gsap from "gsap";
@@ -31,6 +33,8 @@ function Navbar({ visible }: { visible: boolean }) {
 
   const links = [
     { label: "About",      href: "#about-section" },
+    { label: "Tables",     href: "#tables-section" },
+    { label: "Events",     href: "#events-section" },
     { label: "Booking",    href: "#booking-section" },
     { label: "Membership", href: "#membership-section" },
     { label: "Contact",    href: "#footer-section" },
@@ -494,8 +498,14 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ══ TABLES & FACILITIES ══ */}
+        <TablesFacilities />
+
         {/* ══ GALLERY ══ */}
         <Gallery />
+
+        {/* ══ EVENTS & TOURNAMENTS ══ */}
+        <EventsTournaments />
 
         {/* ══ BOOKING ══ */}
         <section id="booking-section" className="relative w-full min-h-screen flex items-center justify-center md:justify-end px-6 md:px-20 py-24 pointer-events-auto">
