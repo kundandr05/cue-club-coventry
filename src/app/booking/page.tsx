@@ -19,11 +19,21 @@ export default function BookingPage() {
   );
   const [selectedTime, setSelectedTime] = useState<string>("08:00 PM");
   const [guests, setGuests] = useState<number>(2);
+  const [memberStatus, setMemberStatus] = useState<"non_member" | "standard" | "premier">("non_member");
+  const [durationHours, setDurationHours] = useState<number>(2);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "confirmed">("idle");
   const [refCode, setRefCode] = useState("");
+
+  // Dynamic Pricing Helper
+  const baseRate = tableType === "snooker" ? 16 : 12;
+  const discountMultiplier = memberStatus === "premier" ? 0.5 : memberStatus === "standard" ? 0.8 : 1.0;
+  const hourlyPrice = baseRate * discountMultiplier;
+  const totalPrice = hourlyPrice * durationHours;
+  const fullPrice = baseRate * durationHours;
+  const savings = fullPrice - totalPrice;
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -276,6 +286,34 @@ export default function BookingPage() {
                   </p>
                 </div>
 
+                {/* Member Status Selector */}
+                <div>
+                  <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-smoke mb-2">
+                    Membership Tier (Applies Discount)
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "non_member", label: "Non-Member", rate: "£" + baseRate + "/hr" },
+                      { id: "standard", label: "Standard Member", rate: "-20% Off" },
+                      { id: "premier", label: "Premier Member", rate: "-50% Off" },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMemberStatus(m.id as "non_member" | "standard" | "premier")}
+                        className={`p-3 rounded-lg border text-left transition-all ${
+                          memberStatus === m.id
+                            ? "border-brass bg-brass/10"
+                            : "border-white/10 bg-white/5 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="font-display text-xs text-porcelain uppercase">{m.label}</div>
+                        <div className="font-mono text-[10px] text-brass mt-0.5">{m.rate}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-smoke mb-2">
@@ -291,16 +329,16 @@ export default function BookingPage() {
 
                   <div>
                     <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-smoke mb-2">
-                      Guests
+                      Duration
                     </label>
                     <select
-                      value={guests}
-                      onChange={(e) => setGuests(Number(e.target.value))}
+                      value={durationHours}
+                      onChange={(e) => setDurationHours(Number(e.target.value))}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-porcelain focus:outline-none focus:border-brass/60"
                     >
-                      {[1, 2, 3, 4, 5, 6, 8, 10].map((n) => (
-                        <option key={n} value={n} className="bg-ink text-porcelain">
-                          {n} {n === 1 ? "Guest" : "Guests"}
+                      {[1, 2, 3, 4, 5].map((h) => (
+                        <option key={h} value={h} className="bg-ink text-porcelain">
+                          {h} {h === 1 ? "Hour Session" : "Hours Session"}
                         </option>
                       ))}
                     </select>
@@ -327,6 +365,28 @@ export default function BookingPage() {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* Live Calculated Price Summary */}
+                <div className="bg-brass/10 border border-brass/40 rounded-xl p-4 flex items-center justify-between">
+                  <div>
+                    <div className="font-mono text-[10px] text-smoke uppercase tracking-wider">
+                      Estimated Total ({durationHours} hr session)
+                    </div>
+                    <div className="flex items-baseline space-x-2 mt-0.5">
+                      <span className="font-mono text-2xl text-brass font-bold">£{totalPrice.toFixed(2)}</span>
+                      {savings > 0 && (
+                        <span className="font-mono text-xs text-smoke line-through">£{fullPrice.toFixed(2)}</span>
+                      )}
+                    </div>
+                  </div>
+                  {savings > 0 ? (
+                    <span className="font-mono text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">
+                      Saving £{savings.toFixed(2)}
+                    </span>
+                  ) : (
+                    <span className="font-mono text-[10px] text-smoke uppercase">Standard Rate</span>
+                  )}
                 </div>
 
                 <div className="flex gap-3 pt-4">
@@ -362,16 +422,21 @@ export default function BookingPage() {
 
                 {/* Summary Pill */}
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex justify-between items-center text-xs font-mono">
-                  <div className="text-smoke">
-                    <span className="text-brass uppercase">
-                      {tableType === "pool" ? "Pool Slate" : "Snooker"}
-                    </span>{" "}
-                    • {selectedDate} at {selectedTime}
+                  <div>
+                    <div className="text-porcelain font-bold">
+                      <span className="text-brass uppercase">
+                        {tableType === "pool" ? "Pool Slate" : tableType === "snooker" ? "Snooker" : "Match Table"}
+                      </span>{" "}
+                      • {selectedDate} at {selectedTime} ({durationHours} hr)
+                    </div>
+                    <div className="text-smoke text-[10px] mt-0.5">
+                      Rate: <span className="text-brass">£{totalPrice.toFixed(2)}</span> ({memberStatus.replace("_", " ").toUpperCase()})
+                    </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="text-brass underline hover:text-porcelain"
+                    className="text-brass underline hover:text-porcelain text-xs"
                   >
                     Edit
                   </button>
