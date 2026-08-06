@@ -667,11 +667,14 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
     });
   }, [loaded, camera, isMobile]);
 
-  // Mouse/Touch Parallax
+  // Mouse/Touch Parallax with 8% dead-zone and lerp 0.08 weighted response
   useFrame((state) => {
     if (!groupRef.current || isMobile) return;
-    const px = (state.pointer.x * Math.PI) / 40;
-    groupRef.current.rotation.y += 0.04 * (px - groupRef.current.rotation.y);
+    const rawX = state.pointer.x;
+    // 8% dead zone near center
+    const deadZoneX = Math.abs(rawX) < 0.08 ? 0 : rawX;
+    const targetY = (deadZoneX * Math.PI) / 36;
+    groupRef.current.rotation.y += 0.08 * (targetY - groupRef.current.rotation.y);
   });
 
   return (
@@ -718,7 +721,12 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
         <LoungeEnvironment isMobile={isMobile} />
 
         <EffectComposer>
-          <Bloom luminanceThreshold={0.75} mipmapBlur intensity={1.2} radius={0.3} />
+          <Bloom
+            luminanceThreshold={0.75}
+            mipmapBlur
+            intensity={isCinematic ? 1.4 : 1.0}
+            radius={isCinematic ? 0.4 : 0.25}
+          />
           <Vignette eskil={false} offset={0.2} darkness={1.1} />
         </EffectComposer>
       </Canvas>
