@@ -487,7 +487,7 @@ export default function Home() {
               For over three decades, Cue Club Coventry has been the home of serious cue sports. Our match-grade tables, professional atmosphere, and dedicated community set a standard that goes far beyond recreation.
             </p>
             <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-6 mb-6">
-              {[["12+", "Tables"], ["30+", "Years"], ["500+", "Members"]].map(([n, l]) => (
+              {[["12+", "Match Tables"], ["30+", "Years"], ["482", "Active Members"]].map(([n, l]) => (
                 <div key={l}>
                   <div className="font-mono text-xl md:text-2xl text-brass">{n}</div>
                   <div className="font-mono text-[10px] text-smoke uppercase tracking-widest mt-1">{l}</div>
@@ -539,6 +539,13 @@ export default function Home() {
             <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] text-porcelain uppercase leading-tight mb-4">
               Join the<br />Inner Circle.
             </h2>
+            <div className="flex items-center space-x-2 bg-emerald-950/60 border border-emerald-500/30 rounded-full px-3 py-1 w-fit mb-4">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider">
+                18 Spots Remaining for 2026 Intake (482 / 500 Filled)
+              </span>
+            </div>
+
             <p className="text-smoke leading-relaxed mb-6 font-light text-sm md:text-base">
               Priority booking, tournament access, and an exclusive lounge. Membership is more than a subscription — it&apos;s belonging.
             </p>

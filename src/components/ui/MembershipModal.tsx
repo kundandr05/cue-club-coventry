@@ -114,9 +114,15 @@ export function MembershipModal({ isOpen, onClose }: MembershipModalProps) {
                 Membership
               </span>
             </div>
-            <h2 className="font-display text-2xl text-porcelain uppercase mb-6">
+            <h2 className="font-display text-2xl text-porcelain uppercase mb-2">
               Apply for Membership
             </h2>
+            <div className="flex items-center space-x-2 bg-emerald-950/60 border border-emerald-500/30 rounded-full px-3 py-1 w-fit mb-6">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider">
+                18 Spots Open (482 / 500 Active Members)
+              </span>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Tier Selector */}
