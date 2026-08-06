@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Loader } from "@/components/layout/Loader";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -29,7 +30,7 @@ function Navbar({ visible }: { visible: boolean }) {
 
   const links = [
     { label: "About",      href: "#about-section" },
-    { label: "Booking",    href: "#booking-section" },
+    { label: "Booking",    href: "/booking" },
     { label: "Membership", href: "#membership-section" },
     { label: "Contact",    href: "#footer-section" },
   ];
@@ -427,11 +428,11 @@ export default function Home() {
 
           {/* Rolling ball CTA */}
           <div className="mt-8 flex flex-col sm:flex-row items-start gap-4 pointer-events-auto">
-            <a href="#booking-section"
+            <Link href="/booking"
               className="rolling-btn group relative overflow-hidden inline-flex items-center gap-3 bg-brass text-ink font-display text-xs uppercase tracking-[0.2em] px-7 py-4 rounded-xl hover:bg-brass/90 transition-all duration-300">
               <span className="ball-roll">🎱</span>
               <span>Book a Table</span>
-            </a>
+            </Link>
             <a href="#about-section"
               className="inline-flex items-center gap-3 border border-white/20 hover:border-brass/60 text-smoke hover:text-porcelain font-mono text-[10px] uppercase tracking-[0.2em] px-7 py-4 rounded-xl transition-all duration-300 backdrop-blur-sm bg-black/30">
               <span>Discover the Club</span>
@@ -468,13 +469,13 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#booking-section"
+            <Link href="/booking"
               className="inline-flex items-center space-x-3 border border-brass/50 hover:border-brass bg-brass/10 hover:bg-brass text-brass hover:text-ink font-display text-xs uppercase tracking-[0.2em] px-6 py-3 rounded-xl transition-all duration-300">
               <span>Reserve a Table</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -529,10 +530,10 @@ export default function Home() {
               ))}
             </div>
 
-            <a href="#booking-section"
+            <Link href="/booking"
               className="block w-full text-center border-2 border-brass bg-brass text-ink font-display text-xs uppercase tracking-[0.2em] py-3.5 rounded-xl hover:bg-brass/90 transition-all duration-300">
               Apply for Membership
-            </a>
+            </Link>
           </div>
         </section>
 
