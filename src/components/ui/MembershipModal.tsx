@@ -31,6 +31,31 @@ export function MembershipModal({ isOpen, onClose }: MembershipModalProps) {
       appliedAt: new Date().toISOString(),
     };
 
+    const historyRecord = {
+      bookingRef: generatedId,
+      tableType: tier === "premier" ? "Premier Membership Tier" : "Standard Membership Tier",
+      date: new Date().toISOString().split("T")[0],
+      time: "Active Membership Pass",
+      guests: 1,
+      name,
+      email,
+      phone,
+      submittedAt: new Date().toISOString(),
+      isMembership: true,
+    };
+
+    // 1. Post to live global server API for cross-device sync
+    try {
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(historyRecord),
+      });
+    } catch (err) {
+      console.error("Live API sync error:", err);
+    }
+
+    // 2. Dispatch to external webhook if configured
     const webhookUrl = process.env.NEXT_PUBLIC_BOOKING_WEBHOOK_URL;
     try {
       if (webhookUrl) {
@@ -39,29 +64,15 @@ export function MembershipModal({ isOpen, onClose }: MembershipModalProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-      } else {
-        await new Promise((r) => setTimeout(r, 1200));
       }
     } catch {
       // ignore
     }
 
-    // Save to localStorage history so it appears in /booking/history
+    // 3. Save to local device storage as backup
     try {
       const stored = localStorage.getItem("cue_club_bookings");
       const existing = stored ? JSON.parse(stored) : [];
-      const historyRecord = {
-        bookingRef: generatedId,
-        tableType: tier === "premier" ? "Premier Membership Tier" : "Standard Membership Tier",
-        date: new Date().toISOString().split("T")[0],
-        time: "Active Membership Pass",
-        guests: 1,
-        name,
-        email,
-        phone,
-        submittedAt: new Date().toISOString(),
-        isMembership: true,
-      };
       localStorage.setItem("cue_club_bookings", JSON.stringify([historyRecord, ...existing]));
     } catch {
       // ignore

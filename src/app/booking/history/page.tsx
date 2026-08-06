@@ -19,15 +19,41 @@ export default function BookingHistoryPage() {
   const [history, setHistory] = useState<BookingRecord[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const fetchLiveHistory = async () => {
     try {
+      // 1. Fetch from live global server database API
+      const res = await fetch("/api/bookings");
+      const data = await res.json();
+
+      let combined: BookingRecord[] = [];
+      if (data?.success && Array.isArray(data.bookings)) {
+        combined = [...data.bookings];
+      }
+
+      // 2. Combine with local device storage
       const stored = localStorage.getItem("cue_club_bookings");
       if (stored) {
-        setHistory(JSON.parse(stored));
+        const localItems: BookingRecord[] = JSON.parse(stored);
+        localItems.forEach((item) => {
+          if (!combined.some((c) => c.bookingRef === item.bookingRef)) {
+            combined.unshift(item);
+          }
+        });
       }
-    } catch {
-      // ignore
+
+      setHistory(combined);
+    } catch (err) {
+      console.error("Error fetching live bookings:", err);
+      // Fallback to local storage
+      try {
+        const stored = localStorage.getItem("cue_club_bookings");
+        if (stored) setHistory(JSON.parse(stored));
+      } catch { /* ignore */ }
     }
+  };
+
+  useEffect(() => {
+    fetchLiveHistory();
 
     if (cardRef.current) {
       gsap.fromTo(

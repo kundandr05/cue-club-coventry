@@ -63,6 +63,18 @@ export default function BookingPage() {
       submittedAt: new Date().toISOString(),
     };
 
+    // 1. Post to live global server API for cross-device sync
+    try {
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("Live API sync error:", err);
+    }
+
+    // 2. Dispatch to external webhook if configured
     const webhookUrl = process.env.NEXT_PUBLIC_BOOKING_WEBHOOK_URL;
     try {
       if (webhookUrl) {
@@ -71,14 +83,12 @@ export default function BookingPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-      } else {
-        await new Promise((r) => setTimeout(r, 1200));
       }
     } catch {
       // ignore
     }
 
-    // Save to localStorage history
+    // 3. Save to local device storage as backup
     try {
       const stored = localStorage.getItem("cue_club_bookings");
       const existing = stored ? JSON.parse(stored) : [];
