@@ -7,6 +7,7 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useQualityTier } from "@/hooks/useQualityTier";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,45 +54,68 @@ const SPLASH_TARGETS: [number, number, number][] = [
 // ─────────────────────────────────────────────
 // POOL BALLS WITH SPLASH BREAK ANIMATION
 // ─────────────────────────────────────────────
+// INSTANCED POOL BALLS — 1 Draw Call Optimization (Stage 2)
+// ─────────────────────────────────────────────
 function PoolBalls({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
-  const ballGroupRef = useRef<THREE.Group>(null);
-  const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
+  const instancedRef = useRef<THREE.InstancedMesh>(null);
+  const dummy = useRef(new THREE.Object3D());
 
+  // Store individual ball transform states for animation
+  const ballStates = useRef(
+    RACK_POSITIONS.map((pos) => ({
+      position: new THREE.Vector3(...pos),
+      rotation: new THREE.Euler(0, 0, 0),
+    }))
+  );
+
+  // Set initial colors and matrices on mount
   useEffect(() => {
-    if (!loaded || !ballGroupRef.current) return;
+    if (!instancedRef.current) return;
+    const mesh = instancedRef.current;
+
+    ballStates.current.forEach((state, i) => {
+      dummy.current.position.copy(state.position);
+      dummy.current.rotation.copy(state.rotation);
+      dummy.current.updateMatrix();
+      mesh.setMatrixAt(i, dummy.current.matrix);
+      mesh.setColorAt(i, new THREE.Color(BALL_COLORS[i % BALL_COLORS.length]));
+    });
+
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  }, []);
+
+  // Animate break splash
+  useEffect(() => {
+    if (!loaded) return;
 
     const tl = gsap.timeline();
 
-    // 1. Cue Ball strikes forward (t = 1.4s after man walks in)
-    const cueMesh = meshRefs.current[0];
-    if (cueMesh) {
-      tl.to(cueMesh.position, {
-        z: SPLASH_TARGETS[0][2],
-        duration: 0.3,
-        ease: "power4.in",
-        delay: 1.4
-      });
-    }
+    // 1. Cue Ball strikes forward
+    const cueState = ballStates.current[0];
+    tl.to(cueState.position, {
+      z: SPLASH_TARGETS[0][2],
+      duration: 0.3,
+      ease: "power4.in",
+      delay: 1.4,
+    });
 
-    // 2. The SPLASH! All 15 balls explode outward from the triangle rack
-    meshRefs.current.forEach((mesh, i) => {
-      if (!mesh) return;
+    // 2. All 15 balls explode outward from rack
+    ballStates.current.forEach((state, i) => {
       const target = SPLASH_TARGETS[i];
-
       tl.to(
-        mesh.position,
+        state.position,
         {
           x: target[0],
           z: target[2],
           duration: 1.2,
           ease: "power3.out",
         },
-        1.65 // Triggers right as cue ball hits apex
+        1.65
       );
 
-      // Add rotation to simulate rolling
       tl.to(
-        mesh.rotation,
+        state.rotation,
         {
           x: (Math.random() - 0.5) * Math.PI * 4,
           z: (Math.random() - 0.5) * Math.PI * 4,
@@ -101,27 +125,33 @@ function PoolBalls({ loaded, isMobile }: { loaded: boolean; isMobile: boolean })
         1.65
       );
     });
-
   }, [loaded]);
 
+  // Update instanced matrix every frame
+  useFrame(() => {
+    if (!instancedRef.current) return;
+    const mesh = instancedRef.current;
+
+    ballStates.current.forEach((state, i) => {
+      dummy.current.position.copy(state.position);
+      dummy.current.rotation.copy(state.rotation);
+      dummy.current.updateMatrix();
+      mesh.setMatrixAt(i, dummy.current.matrix);
+    });
+
+    mesh.instanceMatrix.needsUpdate = true;
+  });
+
   return (
-    <group ref={ballGroupRef}>
-      {RACK_POSITIONS.map((pos, i) => (
-        <mesh
-          key={i}
-          ref={(el) => { meshRefs.current[i] = el; }}
-          position={pos}
-          castShadow={!isMobile}
-        >
-          <sphereGeometry args={[0.14, isMobile ? 16 : 32, isMobile ? 16 : 32]} />
-          <meshStandardMaterial
-            color={BALL_COLORS[i % BALL_COLORS.length]}
-            roughness={0.08}
-            metalness={0.1}
-          />
-        </mesh>
-      ))}
-    </group>
+    <instancedMesh
+      ref={instancedRef}
+      args={[undefined, undefined, 16]}
+      castShadow={!isMobile}
+      receiveShadow={!isMobile}
+    >
+      <sphereGeometry args={[0.14, isMobile ? 16 : 32, isMobile ? 16 : 32]} />
+      <meshStandardMaterial roughness={0.08} metalness={0.1} />
+    </instancedMesh>
   );
 }
 
@@ -656,6 +686,7 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
 // ─────────────────────────────────────────────
 export function HeroTableScene({ loaded }: { loaded: boolean }) {
   const [isMobile, setIsMobile] = useState(false);
+  const { dpr, isCinematic } = useQualityTier();
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -668,7 +699,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
     <div className="absolute inset-0">
       <Canvas
         shadows={!isMobile ? "soft" : false}
-        dpr={isMobile ? [1, 1] : [1, 2]}
+        dpr={isMobile ? 1 : dpr}
         gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 0.85 }}
       >
         <SceneRig loaded={loaded} isMobile={isMobile} />
