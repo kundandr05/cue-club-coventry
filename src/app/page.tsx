@@ -178,11 +178,13 @@ function BookingForm() {
         </div>
       </div>
       <div>
-        <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-smoke mb-2">Table</label>
+        <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-smoke mb-2">Table & Facility Setup</label>
         <select required name="type"
           className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-porcelain focus:outline-none focus:border-brass/60 transition-colors appearance-none">
-          <option value="pool">Professional Pool Slate</option>
-          <option value="snooker">Full-Size Snooker</option>
+          <option value="Simonis 860 Pool Slate" className="bg-ink text-porcelain">Simonis 860 Professional Pool Slate</option>
+          <option value="Heated Italian Snooker Slate" className="bg-ink text-porcelain">Heated Italian Slate 12ft Snooker</option>
+          <option value="Aramith Super Pro Match Table" className="bg-ink text-porcelain">Aramith Super Pro Match Table</option>
+          <option value="Match-Grade 5000K Lighting Table" className="bg-ink text-porcelain">Match-Grade 5000K Lighting Canopy Table</option>
         </select>
       </div>
       <button disabled={status === "submitting"} type="submit"

@@ -202,41 +202,56 @@ export default function BookingPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setTableType("pool")}
-                    className={`p-6 rounded-xl border text-left transition-all ${
-                      tableType === "pool"
-                        ? "border-brass bg-brass/10 shadow-lg shadow-brass/10"
-                        : "border-white/10 bg-white/5 hover:border-white/20"
-                    }`}
-                  >
-                    <div className="font-display text-lg text-porcelain uppercase mb-1">
-                      Professional Pool Slate
-                    </div>
-                    <div className="text-xs font-mono text-brass mb-3">8-Ball & 9-Ball • Match baize</div>
-                    <div className="text-xs text-smoke font-light">
-                      Precision-honed slate tables with Simonis cloth and Aramith Tournament balls.
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setTableType("snooker")}
-                    className={`p-6 rounded-xl border text-left transition-all ${
-                      tableType === "snooker"
-                        ? "border-brass bg-brass/10 shadow-lg shadow-brass/10"
-                        : "border-white/10 bg-white/5 hover:border-white/20"
-                    }`}
-                  >
-                    <div className="font-display text-lg text-porcelain uppercase mb-1">
-                      Full-Size Snooker
-                    </div>
-                    <div className="text-xs font-mono text-brass mb-3">12ft Competition • Heated slate</div>
-                    <div className="text-xs text-smoke font-light">
-                      Tournament-spec 12ft snooker tables with championship lighting.
-                    </div>
-                  </button>
+                  {[
+                    {
+                      id: "pool",
+                      title: "Simonis 860 Pool Slate",
+                      spec: "8-Ball & 9-Ball • Worst-Spun Cloth",
+                      desc: "Precision-honed slate with Belgian Simonis 860 cloth for true, ultra-fast roll.",
+                      icon: "🟢",
+                    },
+                    {
+                      id: "snooker",
+                      title: "Heated Italian Snooker Slate",
+                      spec: "12ft Competition • Heated Bed",
+                      desc: "45mm Italian slate heated bed for zero humidity variance during championship play.",
+                      icon: "🪨",
+                    },
+                    {
+                      id: "aramith",
+                      title: "Aramith Super Pro Table",
+                      spec: "Phenolic Precision • Tournament Balls",
+                      desc: "Equipped with Super Aramith Pro balls for optimal density & deflection response.",
+                      icon: "🎱",
+                    },
+                    {
+                      id: "lighting",
+                      title: "5000K Match Lighting Rig",
+                      spec: "Flicker-Free LED Canopy • Shadowless",
+                      desc: "Overhead canopy diffusers cast zero shadows across cushions and pocket entries.",
+                      icon: "💡",
+                    },
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setTableType(item.id as "pool" | "snooker")}
+                      className={`p-5 rounded-xl border text-left transition-all ${
+                        tableType === item.id
+                          ? "border-brass bg-brass/10 shadow-lg shadow-brass/10"
+                          : "border-white/10 bg-white/5 hover:border-white/20"
+                      }`}
+                    >
+                      <div className="text-2xl mb-2">{item.icon}</div>
+                      <div className="font-display text-base text-porcelain uppercase mb-1">
+                        {item.title}
+                      </div>
+                      <div className="text-[10px] font-mono text-brass mb-2">{item.spec}</div>
+                      <div className="text-xs text-smoke font-light leading-relaxed">
+                        {item.desc}
+                      </div>
+                    </button>
+                  ))}
                 </div>
 
                 <button
