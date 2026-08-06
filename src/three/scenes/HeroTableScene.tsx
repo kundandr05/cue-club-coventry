@@ -298,47 +298,61 @@ function OverheadLamp({ isMobile }: { isMobile: boolean }) {
 // ─────────────────────────────────────────────
 function FooterLightRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) {
   const ambientRef = useRef<THREE.AmbientLight>(null);
-  const fillLightRef = useRef<THREE.DirectionalLight>(null);
-  const spotLightRef = useRef<THREE.SpotLight>(null);
+  const fillLight1Ref = useRef<THREE.DirectionalLight>(null);
+  const fillLight2Ref = useRef<THREE.DirectionalLight>(null);
+  const grandSpotRef = useRef<THREE.SpotLight>(null);
 
   useLayoutEffect(() => {
     if (!loaded) return;
 
-    // ScrollTrigger to ramp UP the room lighting when reaching the Footer/Contact section
+    // ScrollTrigger to TURN ON the room lights when entering the Footer/Contact section
     if (ambientRef.current) {
       gsap.to(ambientRef.current, {
-        intensity: isMobile ? 1.2 : 2.2,
-        color: "#FFD97A",
+        intensity: isMobile ? 1.5 : 2.5,
+        color: "#FFF5E0",
         ease: "power2.out",
         scrollTrigger: {
           trigger: "#membership-section",
-          start: "top top",
+          start: "center top",
           end: "bottom top",
           scrub: 1,
         }
       });
     }
 
-    if (fillLightRef.current) {
-      gsap.to(fillLightRef.current, {
+    if (fillLight1Ref.current) {
+      gsap.to(fillLight1Ref.current, {
+        intensity: isMobile ? 4.0 : 8.0,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#membership-section",
+          start: "center top",
+          end: "bottom top",
+          scrub: 1,
+        }
+      });
+    }
+
+    if (fillLight2Ref.current) {
+      gsap.to(fillLight2Ref.current, {
         intensity: isMobile ? 3.0 : 6.0,
         ease: "power2.out",
         scrollTrigger: {
           trigger: "#membership-section",
-          start: "top top",
+          start: "center top",
           end: "bottom top",
           scrub: 1,
         }
       });
     }
 
-    if (spotLightRef.current) {
-      gsap.to(spotLightRef.current, {
-        intensity: isMobile ? 12 : 30,
+    if (grandSpotRef.current) {
+      gsap.to(grandSpotRef.current, {
+        intensity: isMobile ? 40 : 80,
         ease: "power2.out",
         scrollTrigger: {
           trigger: "#membership-section",
-          start: "top top",
+          start: "center top",
           end: "bottom top",
           scrub: 1,
         }
@@ -348,9 +362,10 @@ function FooterLightRig({ loaded, isMobile }: { loaded: boolean; isMobile: boole
 
   return (
     <>
-      <ambientLight ref={ambientRef} intensity={0.2} color="#FFD97A" />
-      <directionalLight ref={fillLightRef} position={[0, 12, 10]} intensity={0} color="#C9A15A" />
-      <spotLight ref={spotLightRef} position={[0, 16, -5]} intensity={0} angle={1.3} penumbra={0.8} color="#FFF5E0" />
+      <ambientLight ref={ambientRef} intensity={0.15} color="#FFD97A" />
+      <directionalLight ref={fillLight1Ref} position={[15, 15, 10]} intensity={0} color="#FFD97A" />
+      <directionalLight ref={fillLight2Ref} position={[-15, 15, 10]} intensity={0} color="#C9A15A" />
+      <spotLight ref={grandSpotRef} position={[0, 18, 5]} intensity={0} angle={1.4} penumbra={0.8} color="#FFF5E0" />
     </>
   );
 }

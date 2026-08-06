@@ -338,7 +338,7 @@ export default function Home() {
         </section>
 
         {/* ══ FOOTER ══ */}
-        <section id="footer-section" className="relative w-full min-h-[80vh] flex flex-col justify-end px-6 md:px-20 py-16 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-auto">
+        <section id="footer-section" className="relative w-full min-h-screen flex flex-col justify-end px-6 md:px-20 py-16 bg-transparent pointer-events-auto">
           <span className="absolute top-8 left-6 md:left-20 font-mono text-[10px] text-smoke/50 tracking-[0.3em] uppercase">04 — Contact</span>
 
           <h2 id="footer-title" className="font-display text-[clamp(2.5rem,10vw,8rem)] text-brass uppercase leading-none tracking-tighter select-none mb-12 overflow-hidden drop-shadow-[0_0_25px_rgba(201,161,90,0.3)]">
