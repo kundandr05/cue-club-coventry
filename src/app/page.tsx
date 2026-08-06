@@ -165,17 +165,19 @@ export default function Home() {
   useEffect(() => {
     if (!loaded || !titleRef.current) return;
 
-    // Hero text stagger animation
+    // Delay hero text until AFTER the 3D entrance walk-in + ball splash (~3s total)
     const words = titleRef.current.querySelectorAll(".word");
     gsap.fromTo(words,
       { y: 80, opacity: 0, rotateX: 60 },
-      { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1, ease: "power4.out", delay: 0.3, transformOrigin: "bottom center" }
+      { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1, ease: "power4.out",
+        delay: 3.2, // walk-in 1.4s + cue strike 0.3s + splash 1.2s + buffer 0.3s
+        transformOrigin: "bottom center" }
     );
 
-    gsap.fromTo("#navbar-el", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: 1.2 });
-    gsap.fromTo("#scroll-hint", { opacity: 0 }, { opacity: 0.6, duration: 1, delay: 1.8 });
+    gsap.fromTo("#navbar-el", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: 3.0 });
+    gsap.fromTo("#scroll-hint", { opacity: 0 }, { opacity: 0.6, duration: 1, delay: 4.0 });
 
-    // ScrollTrigger animations for all screen sizes (mobile & desktop)
+    // ScrollTrigger animations
     gsap.to(titleRef.current, {
       opacity: 0, y: -60,
       scrollTrigger: { trigger: "#hero-section", start: "40% top", end: "bottom top", scrub: 1 }
@@ -206,7 +208,13 @@ export default function Home() {
   return (
     <main className="w-full bg-ink text-porcelain min-h-screen">
 
-      {/* Loader with Cue Ball Break */}
+      {/* 3D canvas mounts IMMEDIATELY at z-0 so WebGL pre-warms behind the loader.
+          This eliminates the black screen gap between loader and scene. */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <HeroTableScene loaded={loaded} />
+      </div>
+
+      {/* Loader sits on top as a DOM overlay (z-50) */}
       <Loader onLoaded={() => setLoaded(true)} />
 
       {/* Custom Cursor & Scroll Progress (Desktop only) */}
@@ -217,13 +225,8 @@ export default function Home() {
       {loaded && <FloatingCTA />}
 
       {/* Navbar */}
-      <div id="navbar-el">
+      <div id="navbar-el" style={{ opacity: 0 }}>
         <Navbar visible={loaded} />
-      </div>
-
-      {/* 3D R3F Canvas (Fixed background on both Desktop and Mobile!) */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        {loaded && <HeroTableScene loaded={loaded} />}
       </div>
 
       {/* Scrollable DOM Content */}

@@ -375,62 +375,41 @@ function FooterLightRig({ loaded, isMobile }: { loaded: boolean; isMobile: boole
   const fillLight2Ref = useRef<THREE.DirectionalLight>(null);
   const grandSpotRef = useRef<THREE.SpotLight>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!loaded) return;
 
-    // ScrollTrigger to TURN ON the room lights when entering the Footer/Contact section
-    if (ambientRef.current) {
-      gsap.to(ambientRef.current, {
-        intensity: isMobile ? 1.5 : 2.5,
-        color: "#FFF5E0",
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "#membership-section",
-          start: "center top",
-          end: "bottom top",
-          scrub: 1,
-        }
-      });
-    }
-
-    if (fillLight1Ref.current) {
-      gsap.to(fillLight1Ref.current, {
-        intensity: isMobile ? 4.0 : 8.0,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "#membership-section",
-          start: "center top",
-          end: "bottom top",
-          scrub: 1,
-        }
-      });
-    }
-
-    if (fillLight2Ref.current) {
-      gsap.to(fillLight2Ref.current, {
-        intensity: isMobile ? 3.0 : 6.0,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "#membership-section",
-          start: "center top",
-          end: "bottom top",
-          scrub: 1,
-        }
-      });
-    }
-
-    if (grandSpotRef.current) {
-      gsap.to(grandSpotRef.current, {
-        intensity: isMobile ? 40 : 80,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "#membership-section",
-          start: "center top",
-          end: "bottom top",
-          scrub: 1,
-        }
-      });
-    }
+    // Wait one frame so refs are populated
+    const raf = requestAnimationFrame(() => {
+      if (ambientRef.current) {
+        gsap.to(ambientRef.current, {
+          intensity: isMobile ? 1.5 : 2.5,
+          ease: "power2.out",
+          scrollTrigger: { trigger: "#membership-section", start: "center top", end: "bottom top", scrub: 1 }
+        });
+      }
+      if (fillLight1Ref.current) {
+        gsap.to(fillLight1Ref.current, {
+          intensity: isMobile ? 4.0 : 8.0,
+          ease: "power2.out",
+          scrollTrigger: { trigger: "#membership-section", start: "center top", end: "bottom top", scrub: 1 }
+        });
+      }
+      if (fillLight2Ref.current) {
+        gsap.to(fillLight2Ref.current, {
+          intensity: isMobile ? 3.0 : 6.0,
+          ease: "power2.out",
+          scrollTrigger: { trigger: "#membership-section", start: "center top", end: "bottom top", scrub: 1 }
+        });
+      }
+      if (grandSpotRef.current) {
+        gsap.to(grandSpotRef.current, {
+          intensity: isMobile ? 40 : 80,
+          ease: "power2.out",
+          scrollTrigger: { trigger: "#membership-section", start: "center top", end: "bottom top", scrub: 1 }
+        });
+      }
+    });
+    return () => cancelAnimationFrame(raf);
   }, [loaded, isMobile]);
 
   return (
@@ -450,52 +429,55 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
   const groupRef = useRef<THREE.Group>(null);
   const { camera } = useThree();
 
-  useLayoutEffect(() => {
+  // Set the camera to the entrance doorway position on FIRST MOUNT
+  // This runs even before `loaded` so no black-screen flicker
+  useEffect(() => {
+    if (!groupRef.current) return;
+    groupRef.current.position.set(0, 4, 26);
+    groupRef.current.rotation.set(-0.1, 0, 0);
+    camera.position.set(0, 0, 0);
+    camera.rotation.set(0, 0, 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once on mount only
+
+  // Entrance animation fires when loader finishes (loaded becomes true)
+  useEffect(() => {
     if (!loaded || !groupRef.current) return;
 
     const heroZ = isMobile ? 12 : 9;
-    const heroY = isMobile ? 3.2 : 2.5;
-
-    // STEP 1: Entrance Start Position — Man standing near entrance doorway looking down club aisle
-    gsap.set(groupRef.current.position, { x: 0, y: 3.5, z: 24 });
-    gsap.set(groupRef.current.rotation, { x: -0.15, y: 0, z: 0 });
-    camera.position.set(0, 0, 0);
-    camera.rotation.set(0, 0, 0);
+    const heroY = isMobile ? 3.0 : 2.5;
 
     const tl = gsap.timeline();
 
-    // STEP 2: Man walks forward down the aisle into the room towards the racked table
+    // STEP 1 → 2: Walk down aisle, look down at racked triangle
     tl.to(groupRef.current.position, {
-      y: 1.8,
-      z: 4.5,
+      y: 1.6,
+      z: 4.0,
       duration: 1.4,
       ease: "power2.inOut",
     });
-
     tl.to(groupRef.current.rotation, {
-      x: -0.25, // Tilted down to focus on the 15-ball triangle rack
+      x: -0.3,
       duration: 1.4,
       ease: "power2.inOut",
     }, 0);
 
-    // STEP 3: Cue ball hits, 15 balls SPLASH! Camera lifts & dollies into Hero Position as website opens!
+    // STEP 3: Cue strikes (handled in PoolBalls at t=1.4s). Camera lifts & dollies back to hero view
     tl.to(groupRef.current.position, {
       y: heroY,
       z: heroZ,
-      duration: 1.2,
+      x: 0,
+      duration: 1.3,
       ease: "power3.out",
-    }, 1.75);
-
+    }, 1.6);
     tl.to(groupRef.current.rotation, {
       x: -0.12,
-      duration: 1.2,
+      y: 0,
+      duration: 1.3,
       ease: "power3.out",
-    }, 1.75);
+    }, 1.6);
 
-    // ─────────────────────────────────────────────
-    // SCROLL-TRIGGERED CAMERA MOVEMENTS (After Opening)
-    // ─────────────────────────────────────────────
-    // About: pull back to reveal lounge
+    // SCROLL-TRIGGERED CAMERA MOVEMENTS
     gsap.to(groupRef.current.position, {
       y: isMobile ? 7 : 6, z: isMobile ? 24 : 20,
       ease: "none",
@@ -506,8 +488,6 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
       ease: "none",
       scrollTrigger: { trigger: "#hero-section", start: "top top", end: "bottom top", scrub: 1 }
     });
-
-    // Booking: top-down view
     gsap.to(groupRef.current.position, {
       y: isMobile ? 18 : 16, z: 0.5,
       ease: "none",
@@ -518,8 +498,6 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
       ease: "none",
       scrollTrigger: { trigger: "#about-section", start: "top top", end: "bottom top", scrub: 1 }
     });
-
-    // Membership: macro dive to pocket
     gsap.to(groupRef.current.position, {
       y: isMobile ? 0.6 : 0.2, z: isMobile ? 5 : 4, x: isMobile ? -2 : -4,
       ease: "none",
@@ -530,8 +508,6 @@ function SceneRig({ loaded, isMobile }: { loaded: boolean; isMobile: boolean }) 
       ease: "none",
       scrollTrigger: { trigger: "#booking-section", start: "top top", end: "bottom top", scrub: 1 }
     });
-
-    // Footer: Light-On Grand Reveal Camera Movement
     gsap.to(groupRef.current.position, {
       y: isMobile ? 4 : 3.5, z: isMobile ? 22 : 18, x: 0,
       ease: "none",
