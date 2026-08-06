@@ -149,6 +149,107 @@ function BookingForm() {
 }
 
 // ─────────────────────────────────────────────
+// MOBILE BACKGROUND — Pure CSS, zero WebGL lag
+// Animated felt-green atmospheric scene
+// ─────────────────────────────────────────────
+function MobileBg({ loaded }: { loaded: boolean }) {
+  return (
+    <div
+      className="absolute inset-0 overflow-hidden"
+      style={{ background: "#060e09" }}
+    >
+      {/* Felt table glow — centred radial */}
+      <div
+        className="absolute"
+        style={{
+          inset: 0,
+          background:
+            "radial-gradient(ellipse 120% 55% at 50% 60%, rgba(11,61,46,0.85) 0%, rgba(6,14,9,0) 70%)",
+          animation: loaded ? "mobileFeltPulse 4s ease-in-out infinite" : "none",
+        }}
+      />
+
+      {/* Overhead spotlight */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2"
+        style={{
+          top: "10%",
+          width: "2px",
+          height: "40%",
+          background: "linear-gradient(to bottom, rgba(201,161,90,0.5), transparent)",
+          filter: "blur(8px)",
+        }}
+      />
+      <div
+        className="absolute left-1/2 -translate-x-1/2"
+        style={{
+          top: "10%",
+          width: "220px",
+          height: "220px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(201,161,90,0.12) 0%, transparent 70%)",
+          transform: "translateX(-50%)",
+          filter: "blur(20px)",
+        }}
+      />
+
+      {/* Pool table surface silhouette */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2"
+        style={{
+          top: "40%",
+          width: "90vw",
+          maxWidth: "380px",
+          height: "160px",
+          background: "rgba(11,61,46,0.55)",
+          border: "1px solid rgba(201,161,90,0.15)",
+          borderRadius: "6px",
+          boxShadow: "0 0 40px rgba(11,61,46,0.6), 0 0 80px rgba(11,61,46,0.3)",
+          animation: loaded ? "mobileTableGlow 3s ease-in-out infinite" : "none",
+        }}
+      />
+
+      {/* Scattered ball dots */}
+      {[
+        { top: "44%", left: "30%", color: "#F5C518", size: 10 },
+        { top: "52%", left: "60%", color: "#B71C1C", size: 10 },
+        { top: "48%", left: "50%", color: "#0A0A0A", size: 12 },
+        { top: "46%", left: "40%", color: "#1565C0", size: 9 },
+        { top: "55%", left: "45%", color: "#6A1B9A", size: 9 },
+        { top: "43%", left: "55%", color: "#1B5E20", size: 10 },
+      ].map((b, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            top: b.top,
+            left: b.left,
+            width: b.size,
+            height: b.size,
+            background: b.color,
+            boxShadow: `0 0 6px ${b.color}88`,
+            animation: loaded
+              ? `mobileBallFloat ${2.5 + i * 0.3}s ease-in-out ${i * 0.2}s infinite`
+              : "none",
+            opacity: loaded ? 1 : 0,
+            transition: "opacity 0.5s ease",
+          }}
+        />
+      ))}
+
+      {/* Vignette */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.85) 100%)",
+        }}
+      />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
 // PAGE
 // ─────────────────────────────────────────────
 export default function Home() {
@@ -156,6 +257,15 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [strikeTriggered, setStrikeTriggered] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
+
+  // ── FIX: Always start from top on refresh ──────────────────────────────
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Disable browser scroll restoration so refresh always starts at top
+      history.scrollRestoration = 'manual';
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, []);
 
   // Check mobile device on mount
   useEffect(() => {
@@ -168,68 +278,69 @@ export default function Home() {
   useEffect(() => {
     if (!loaded || !titleRef.current) return;
 
-    // Delay hero text until AFTER the 3D entrance walk-in + ball splash (~3s total)
+    // On mobile: no 3D walk-in so text appears quickly (0.8s delay)
+    // On desktop: wait for full 3D entrance sequence (~3.2s)
+    const textDelay = isMobile ? 0.8 : 3.2;
+    const navDelay  = isMobile ? 0.6 : 3.0;
+    const hintDelay = isMobile ? 1.5 : 4.0;
+
     const words = titleRef.current.querySelectorAll(".word");
     gsap.fromTo(words,
       { y: 80, opacity: 0, rotateX: 60 },
-      { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1, ease: "power4.out",
-        delay: 3.2,
-        transformOrigin: "bottom center" }
+      { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1,
+        ease: "power4.out", delay: textDelay, transformOrigin: "bottom center" }
     );
 
-    // Trigger sound at cue strike moment (t = 1.4s)
-    setTimeout(() => setStrikeTriggered(true), 1400);
+    // Sound + spotlight only on desktop
+    if (!isMobile) {
+      setTimeout(() => setStrikeTriggered(true), 1400);
+      setTimeout(() => {
+        if (titleRef.current) titleRef.current.classList.add("spotlight-sweep");
+      }, 5000);
+    }
 
-    // Add spotlight sweep class to title after text appears
-    setTimeout(() => {
-      if (titleRef.current) titleRef.current.classList.add("spotlight-sweep");
-    }, 4000);
+    gsap.fromTo("#navbar-el", { y: -30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: navDelay });
+    gsap.fromTo("#scroll-hint", { opacity: 0 },
+      { opacity: 0.6, duration: 1, delay: hintDelay });
 
-    gsap.fromTo("#navbar-el", { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: 3.0 });
-    gsap.fromTo("#scroll-hint", { opacity: 0 }, { opacity: 0.6, duration: 1, delay: 4.0 });
-
-    // ScrollTrigger animations
+    // ScrollTrigger animations (same for all)
     gsap.to(titleRef.current, {
       opacity: 0, y: -60,
       scrollTrigger: { trigger: "#hero-section", start: "40% top", end: "bottom top", scrub: 1 }
     });
-
-    gsap.fromTo("#about-text",
-      { opacity: 0, y: 50 },
+    gsap.fromTo("#about-text", { opacity: 0, y: 50 },
       { opacity: 1, y: 0, scrollTrigger: { trigger: "#about-section", start: "top 80%", end: "top 30%", scrub: 1 } }
     );
-
-    gsap.fromTo("#booking-card",
-      { opacity: 0, y: 50 },
+    gsap.fromTo("#booking-card", { opacity: 0, y: 50 },
       { opacity: 1, y: 0, scrollTrigger: { trigger: "#booking-section", start: "top 80%", end: "top 30%", scrub: 1 } }
     );
-
-    gsap.fromTo("#membership-content",
-      { opacity: 0, y: 50 },
+    gsap.fromTo("#membership-content", { opacity: 0, y: 50 },
       { opacity: 1, y: 0, scrollTrigger: { trigger: "#membership-section", start: "top 80%", end: "top 30%", scrub: 1 } }
     );
-
-    gsap.fromTo("#footer-title",
-      { opacity: 0.1, y: 40 },
+    gsap.fromTo("#footer-title", { opacity: 0.1, y: 40 },
       { opacity: 0.85, y: 0, scrollTrigger: { trigger: "#footer-section", start: "top 80%", end: "top 20%", scrub: 1 } }
     );
-
-  }, [loaded]);
+  }, [loaded, isMobile]);
 
   return (
     <main className="w-full bg-ink text-porcelain min-h-screen">
 
-      {/* 3D canvas mounts IMMEDIATELY at z-0 so WebGL pre-warms behind the loader.
-          This eliminates the black screen gap between loader and scene. */}
+      {/* ── BACKGROUND ───────────────────────────────────────────────────
+          Desktop: Full 3D WebGL canvas (pre-warmed behind loader)
+          Mobile:  Pure CSS background — zero WebGL, zero lag            */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <HeroTableScene loaded={loaded} />
+        {!isMobile
+          ? <HeroTableScene loaded={loaded} />
+          : <MobileBg loaded={loaded} />
+        }
       </div>
 
-      {/* Loader sits on top as a DOM overlay (z-50) */}
+      {/* Loader overlay (z-50) */}
       <Loader onLoaded={() => setLoaded(true)} />
 
-      {/* Sound toggle — appears 2s after load */}
-      <SoundToggle playStrike={strikeTriggered} />
+      {/* Sound toggle — desktop only */}
+      {!isMobile && <SoundToggle playStrike={strikeTriggered} />}
 
       {/* Custom Cursor & Scroll Progress (Desktop only) */}
       {loaded && !isMobile && <CustomCursor />}

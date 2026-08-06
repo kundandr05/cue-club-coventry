@@ -147,3 +147,21 @@ html.lenis, html.lenis body {
 .gallery-item img {
   will-change: transform;
 }
+
+/* ─────────────────────────────────────────────
+   MOBILE BACKGROUND ANIMATIONS
+───────────────────────────────────────────── */
+@keyframes mobileFeltPulse {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes mobileTableGlow {
+  0%, 100% { box-shadow: 0 0 40px rgba(11,61,46,0.6), 0 0 80px rgba(11,61,46,0.3); }
+  50%       { box-shadow: 0 0 60px rgba(11,61,46,0.8), 0 0 120px rgba(11,61,46,0.5); }
+}
+
+@keyframes mobileBallFloat {
+  0%, 100% { transform: translateY(0px);   }
+  50%      { transform: translateY(-4px);  }
+}
