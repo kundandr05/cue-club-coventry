@@ -117,9 +117,9 @@ export default function BookingPage() {
         <div className="flex items-center space-x-6">
           <Link
             href="/booking/history"
-            className="font-mono text-xs text-smoke hover:text-brass transition-colors uppercase tracking-wider hidden sm:inline"
+            className="font-mono text-xs text-brass hover:text-porcelain transition-colors uppercase tracking-wider bg-brass/10 border border-brass/30 px-3 py-1.5 rounded-lg"
           >
-            My Reservations →
+            My History 📋
           </Link>
           <span className="font-display text-brass text-xs tracking-[0.3em] uppercase">
             The Cue Club

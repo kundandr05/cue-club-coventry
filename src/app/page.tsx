@@ -100,6 +100,13 @@ function Navbar({ visible }: { visible: boolean }) {
               {l.label}
             </a>
           ))}
+          <Link
+            href="/booking/history"
+            onClick={() => setMobileOpen(false)}
+            className="font-mono text-xs text-brass uppercase tracking-widest border border-brass/30 bg-brass/10 px-4 py-3 rounded-xl text-center hover:bg-brass/20 transition-colors mt-2"
+          >
+            📋 My Reservation History
+          </Link>
         </div>
       </div>
     </nav>
