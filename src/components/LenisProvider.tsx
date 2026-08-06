@@ -14,11 +14,11 @@ export default function LenisProvider({ children }: LenisProviderProps) {
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.8,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
     });
 

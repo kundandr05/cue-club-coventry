@@ -488,18 +488,10 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
         <DustMotes isMobile={isMobile} />
         <LoungeEnvironment isMobile={isMobile} />
 
-        {!isMobile ? (
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.6} mipmapBlur intensity={2} radius={0.4} />
-            <ChromaticAberration offset={new Vector2(0.0005, 0.0005)} radialModulation={false} modulationOffset={0} />
-            <Vignette eskil={false} offset={0.15} darkness={1.3} />
-          </EffectComposer>
-        ) : (
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.7} intensity={1} radius={0.3} />
-            <Vignette eskil={false} offset={0.2} darkness={1.2} />
-          </EffectComposer>
-        )}
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.75} mipmapBlur intensity={1.2} radius={0.3} />
+          <Vignette eskil={false} offset={0.2} darkness={1.1} />
+        </EffectComposer>
       </Canvas>
     </div>
   );
