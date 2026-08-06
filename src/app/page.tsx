@@ -7,6 +7,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import { Gallery } from "@/components/sections/Gallery";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { EASINGS, DURATIONS } from "@/utils/easings";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -249,6 +250,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const soundFired = useRef(false);
+  const reducedMotion = useReducedMotion();
 
   // ── FIX: Always start from top on refresh ───────────────────────────
   useEffect(() => {
@@ -260,7 +262,7 @@ export default function Home() {
 
   // ── AUTO SOUND: fires on first user touch/click (browser policy safe) ─
   useEffect(() => {
-    if (isMobile) return; // sound on desktop only
+    if (isMobile || reducedMotion) return; // sound on desktop only
     const handleFirstInteraction = () => {
       if (soundFired.current) return;
       soundFired.current = true;
@@ -296,7 +298,7 @@ export default function Home() {
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, [isMobile, loaded]);
+  }, [isMobile, loaded, reducedMotion]);
 
   // Check mobile device on mount
   useEffect(() => {
@@ -309,11 +311,11 @@ export default function Home() {
   useEffect(() => {
     if (!loaded || !titleRef.current) return;
 
-    // On mobile: no 3D walk-in so text appears quickly (0.8s delay)
-    // On desktop: wait for full 3D entrance sequence (~3.2s)
-    const textDelay = isMobile ? 0.8 : 3.2;
-    const navDelay  = isMobile ? 0.6 : 3.0;
-    const hintDelay = isMobile ? 1.5 : 4.0;
+    // Reduced motion: zero delay, instant opacity
+    const textDelay = reducedMotion ? 0 : isMobile ? 0.8 : 3.2;
+    const navDelay  = reducedMotion ? 0 : isMobile ? 0.6 : 3.0;
+    const hintDelay = reducedMotion ? 0 : isMobile ? 1.5 : 4.0;
+    const dur       = reducedMotion ? 0.1 : DURATIONS.signature;
 
     const words = titleRef.current.querySelectorAll(".word");
     gsap.fromTo(words,
