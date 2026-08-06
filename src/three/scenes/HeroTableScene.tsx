@@ -275,6 +275,36 @@ function PoolTable({ isMobile }: { isMobile: boolean }) {
 }
 
 // ─────────────────────────────────────────────
+// CUE STICK — Secondary sway motion detail
+// ─────────────────────────────────────────────
+function CueStick({ isMobile }: { isMobile: boolean }) {
+  const stickRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (!stickRef.current) return;
+    const t = state.clock.getElapsedTime();
+    // Subtle ~4.5s breathing sway cycle (<0.8 deg rotation)
+    stickRef.current.rotation.z = Math.sin(t * 1.4) * 0.008;
+    stickRef.current.rotation.y = Math.cos(t * 1.1) * 0.006;
+  });
+
+  return (
+    <group ref={stickRef} position={[-2.2, -0.78, 2.2]} rotation={[0.08, -0.4, 0.05]}>
+      {/* Shaft */}
+      <mesh castShadow={!isMobile}>
+        <cylinderGeometry args={[0.02, 0.035, 4.2, 16]} />
+        <meshStandardMaterial color="#C9A15A" roughness={0.3} metalness={0.1} />
+      </mesh>
+      {/* Cue Tip (Brass ferrule + leather tip) */}
+      <mesh position={[0, 2.12, 0]}>
+        <cylinderGeometry args={[0.018, 0.02, 0.05, 16]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.5} metalness={0.1} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─────────────────────────────────────────────
 // LOUNGE ENVIRONMENT
 // ─────────────────────────────────────────────
 function LoungeEnvironment({ isMobile }: { isMobile: boolean }) {
@@ -650,6 +680,7 @@ export function HeroTableScene({ loaded }: { loaded: boolean }) {
 
         <OverheadLamp isMobile={isMobile} />
         <PoolTable isMobile={isMobile} />
+        <CueStick isMobile={isMobile} />
         <PoolBalls loaded={loaded} isMobile={isMobile} />
         {!isMobile && <ChalkDust loaded={loaded} />}
         <DustMotes isMobile={isMobile} />

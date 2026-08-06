@@ -7,6 +7,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import { Gallery } from "@/components/sections/Gallery";
+import { EASINGS, DURATIONS } from "@/utils/easings";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -317,8 +318,8 @@ export default function Home() {
     const words = titleRef.current.querySelectorAll(".word");
     gsap.fromTo(words,
       { y: 80, opacity: 0, rotateX: 60 },
-      { y: 0, opacity: 1, rotateX: 0, duration: 1.4, stagger: 0.1,
-        ease: "power4.out", delay: textDelay, transformOrigin: "bottom center" }
+      { y: 0, opacity: 1, rotateX: 0, duration: DURATIONS.signature, stagger: 0.08,
+        ease: EASINGS.settleGsap, delay: textDelay, transformOrigin: "bottom center" }
     );
 
     // Sound + spotlight only on desktop
@@ -329,9 +330,9 @@ export default function Home() {
     }
 
     gsap.fromTo("#navbar-el", { y: -30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power2.out", delay: navDelay });
+      { y: 0, opacity: 1, duration: 1.0, ease: EASINGS.settleGsap, delay: navDelay });
     gsap.fromTo("#scroll-hint", { opacity: 0 },
-      { opacity: 0.6, duration: 1, delay: hintDelay });
+      { opacity: 0.6, duration: 1.0, ease: EASINGS.settleGsap, delay: hintDelay });
 
     // ScrollTrigger animations (same for all)
     gsap.to(titleRef.current, {
